@@ -19,8 +19,6 @@ RUN npm run test --watchAll=false
 
 
 FROM nginx:1.12-alpine
-COPY package* ./
-RUN npm ci --production
 COPY --from=build /app/build /usr/share/nginx/html
 
 EXPOSE 80
