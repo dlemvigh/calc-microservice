@@ -4,9 +4,9 @@ import { getFactorial } from "./routes/factorial/getFactorial";
 import { postFactorial } from "./routes/factorial/postFactorials";
 import { putFactorial } from "./routes/factorial/putFactorial";
 
-const app = express();
-
 const PORT = process.env.PORT || 8081;
+
+const app = express();
 
 app.use(express.json());
 
