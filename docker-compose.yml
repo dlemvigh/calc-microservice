@@ -16,3 +16,10 @@ services:
       - PORT=80
     ports:
       - 8081:80
+  calc-jobs-queue:
+    image: roribio16/alpine-sqs
+    ports:
+      - 9324:9324
+      - 9325:9325
+    # volumes:
+    #   - ./calc-jobs-queue/elasticmq.conf:/opt/config/elasticmq.conf
