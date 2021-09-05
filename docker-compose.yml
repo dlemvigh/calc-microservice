@@ -12,3 +12,7 @@ services:
   calc-api:
     build:
       context: calc-api
+    environment:
+      - PORT=80
+    ports:
+      - 8081:80
