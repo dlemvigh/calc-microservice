@@ -1,6 +1,8 @@
 import React from 'react';
 import styled, { createGlobalStyle } from "styled-components";
 import { CalculationForm } from './Form/CalculationForm';
+import { CalculationList } from './List/CalculationList';
+
 const GlobalStyles = createGlobalStyle`
   body {
     margin: 0;
@@ -17,13 +19,23 @@ const Main = styled.main`
   margin: 0 auto;
 `
 
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  > * + * {
+    margin-top: 64px;
+  }
+`;
 
 function App() {
   return (
     <Main>
       <GlobalStyles />
       <h1>Factorials'r'us</h1>
-      <CalculationForm />
+      <Column>
+        <CalculationForm />
+        <CalculationList />
+      </Column>
     </Main>
   );
 }
