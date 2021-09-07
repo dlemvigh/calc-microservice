@@ -1,6 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
 const API_ENDPOINT = "http://localhost:8081";
+const REFETCH_INTERVAL = 60 * 1000;
+const FACTORIALS_CACHE_KEY = "factorials";
 
 export async function getFactorials() {
   const res = await fetch(`${API_ENDPOINT}/factorial`, {
@@ -27,12 +29,13 @@ export async function postFactorial({ input }) {
   console.log("res", res);
 }
 
-const FACTORIALS_CACHE_KEY = "factorials";
-
 export function useFactorials() {
   const { data, error, isLoading } = useQuery(
     FACTORIALS_CACHE_KEY,
-    getFactorials
+    getFactorials,
+    {
+      refetchInterval: REFETCH_INTERVAL,
+    }
   );
   return { data, error, isLoading };
 }
