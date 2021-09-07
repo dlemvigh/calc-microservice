@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { health } from "./routes/health";
 import { getFactorial } from "./routes/factorial/getFactorial";
-import { postFactorial } from "./routes/factorial/postFactorials";
+import { postFactorial } from "./routes/factorial/postFactorial";
 import { putFactorial } from "./routes/factorial/putFactorial";
 
 const PORT = process.env.PORT || 8081;

@@ -1,5 +1,7 @@
 import { RequestHandler } from "express";
-
+import { getFactorials } from "../../db/factorial";
 export const getFactorial: RequestHandler = async (req, res) => {
-  res.sendStatus(200);
+  const items = await getFactorials();
+  res.status(200);
+  res.json(items);
 };
