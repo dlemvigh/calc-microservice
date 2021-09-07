@@ -4,7 +4,7 @@ import { Button } from "@material-ui/core";
 import { CalculationInput } from "./CalculationInput";
 import * as Yup from "yup";
 import { Row } from "../Components/Flex";
-import { postFactorial } from "../Query/factorial";
+import { postFactorial, useCreateFactorial } from "../Query/factorial";
 const validationSchema = Yup.object().shape({
     input: Yup.number()
         .min(0, "Must be a positive number")
@@ -17,9 +17,10 @@ interface FormValues {
 }
 
 export function CalculationForm() {
-
+    const mutate = useCreateFactorial();
     const handleSubmit = useCallback(async (values: FormValues, helpers: FormikHelpers<FormValues>) => {
-        await postFactorial({ input: values.input });
+        await mutate.mutateAsync({ input: values.input });
+        // await postFactorial({ input: values.input });
         helpers.resetForm();
     }, []);
 

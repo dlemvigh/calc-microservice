@@ -1,12 +1,13 @@
 import React from "react";
-import { useAsync } from "react-async";
+// import { useAsync } from "react-async";
+import { useFactorials } from "../Query/factorial";
 import { Table, TableBody, TableRow, TableCell, TableHead } from "@material-ui/core"
-import { getFactorials } from "../Query/factorial";
 
 export function CalculationList() {
-    const { data } = useAsync({
-        promiseFn: getFactorials
-    })
+    // const { data } = useAsync({
+    //     promiseFn: getFactorials
+    // })
+    const { data } = useFactorials();
 
     return (
         <>

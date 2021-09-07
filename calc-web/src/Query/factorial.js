@@ -1,3 +1,5 @@
+import { useQuery, useMutation, useQueryClient } from "react-query";
+
 const API_ENDPOINT = "http://localhost:8081";
 
 export async function getFactorials() {
@@ -23,4 +25,23 @@ export async function postFactorial({ input }) {
     body,
   });
   console.log("res", res);
+}
+
+const FACTORIALS_CACHE_KEY = "factorials";
+
+export function useFactorials() {
+  const { data, error, isLoading } = useQuery(
+    FACTORIALS_CACHE_KEY,
+    getFactorials
+  );
+  return { data, error, isLoading };
+}
+
+export function useCreateFactorial() {
+  const queryClient = useQueryClient();
+  return useMutation(postFactorial, {
+    onSettled: () => {
+      queryClient.invalidateQueries(FACTORIALS_CACHE_KEY);
+    },
+  });
 }
