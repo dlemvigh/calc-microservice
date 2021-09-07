@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { health } from "./routes/health";
 import { getFactorial } from "./routes/factorial/getFactorial";
 import { postFactorial } from "./routes/factorial/postFactorials";
@@ -8,6 +9,7 @@ const PORT = process.env.PORT || 8081;
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/health", health);

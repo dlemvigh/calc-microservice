@@ -1,10 +1,10 @@
-import React from "react";
-import { Formik } from "formik";
+import React, { useCallback } from "react";
+import { Formik, FormikHelpers } from "formik";
 import { Button } from "@material-ui/core";
 import { CalculationInput } from "./CalculationInput";
 import * as Yup from "yup";
 import { Row } from "../Components/Flex";
-
+import { postFactorial } from "../Query/factorial";
 const validationSchema = Yup.object().shape({
     input: Yup.number()
         .min(0, "Must be a positive number")
@@ -12,18 +12,28 @@ const validationSchema = Yup.object().shape({
         .required("Required")
 })
 
+interface FormValues {
+    input: number;
+}
+
 export function CalculationForm() {
+
+    const handleSubmit = useCallback(async (values: FormValues, helpers: FormikHelpers<FormValues>) => {
+        await postFactorial({ input: values.input });
+        helpers.resetForm();
+    }, []);
+
     return (
         <Formik
             initialValues={{ input: 2000 }}
             validationSchema={validationSchema}
-            onSubmit={() => { }}
+            onSubmit={handleSubmit}
         >
             {({ handleSubmit }) => (
                 <form onSubmit={handleSubmit}>
                     <Row style={{ justifyContent: "space-between", alignItems: "flex-end" }}>
                         <CalculationInput />
-                        <Button variant="contained" color="primary">calc</Button>
+                        <Button variant="contained" color="primary" type="submit">calc</Button>
                     </Row>
                 </form>
             )}

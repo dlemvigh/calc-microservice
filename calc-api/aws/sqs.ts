@@ -28,3 +28,8 @@ export async function sendMessage(body: string) {
     );
   });
 }
+
+export async function sendJSON(json: object) {
+  const body = JSON.stringify(json);
+  await sendMessage(body);
+}
