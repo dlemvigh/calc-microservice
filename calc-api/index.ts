@@ -8,7 +8,6 @@ import { putFactorial } from "./routes/factorial/putFactorial";
 const PORT = process.env.PORT || 8081;
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 

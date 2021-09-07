@@ -28,3 +28,8 @@ services:
       - 9325:9325
     # volumes:
     #   - ./calc-jobs-queue/elasticmq.conf:/opt/config/elasticmq.conf
+  calc-worker:
+    build: ./calc-worker
+    environment:
+      - SQS_ENDPOINT=http://calc-jobs-queue:9324
+      - QUEUE_ENDPOINT=http://calc-jobs-queue:9324/queue/default
