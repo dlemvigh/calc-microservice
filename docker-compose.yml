@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   calc-web:
+    container_name: calc-web
     build:
       context: calc-web
     ports:
@@ -10,13 +11,17 @@ services:
   #calc-api-db:
   #image: postgres:12.8-alpine
   calc-api:
+    container_name: calc-api
     build:
       context: calc-api
     environment:
       - PORT=80
+      - SQS_ENDPOINT=http://calc-jobs-queue:9324
+      - QUEUE_ENDPOINT=http://calc-jobs-queue:9324/queue/default
     ports:
       - 8081:80
   calc-jobs-queue:
+    container_name: calc-jobs-queue
     image: roribio16/alpine-sqs
     ports:
       - 9324:9324
