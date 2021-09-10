@@ -1,0 +1,4 @@
+{
+  "diff": true,
+  "watch-files": ["test/**/*.ts"]
+}

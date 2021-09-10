@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.ts",
+    "test": "mocha tests/**/*.test.ts",
     "build": "tsc"
   },
   "keywords": [],
@@ -12,14 +13,26 @@
   "license": "ISC",
   "devDependencies": {
     "@tsconfig/node14": "^1.0.1",
+    "@types/chai": "^4.2.21",
+    "@types/mocha": "^9.0.0",
     "@types/node": "^16.7.13",
     "@types/node-fetch": "^2.5.12",
+    "chai": "^4.3.4",
+    "mocha": "^9.1.1",
     "nodemon": "^2.0.12",
+    "nyc": "^15.1.0",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.2"
   },
   "dependencies": {
     "aws-sdk": "^2.983.0",
     "node-fetch": "^2.6.2"
+  },
+  "mocha": {
+    "diff": true,
+    "require": "ts-node/register",
+    "watch-files": [
+      "tests/**/*.ts"
+    ]
   }
 }
