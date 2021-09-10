@@ -26,8 +26,8 @@ services:
     ports:
       - 9324:9324
       - 9325:9325
-    # volumes:
-    #   - ./calc-jobs-queue/elasticmq.conf:/opt/config/elasticmq.conf
+    volumes:
+      - ./calc-jobs-queue/elasticmq.conf:/opt/config/elasticmq.conf
   calc-worker:
     build: ./calc-worker
     environment:
