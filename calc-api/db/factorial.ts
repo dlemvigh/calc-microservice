@@ -2,9 +2,10 @@ let counter = 0;
 
 type Status = "pending" | "finished" | "error";
 
-interface Item {
+export interface Item {
   id: number;
   input: number;
+  output?: number;
   status: Status;
   createdAt: Date;
   finishedAt?: Date;
@@ -23,7 +24,7 @@ export async function createFactorial({ input }: { input: number }) {
   return item;
 }
 
-export async function putFactorial(id: number, item: Partial<Item>) {
+export async function updateFractorial(id: number, item: Partial<Item>) {
   const newItem = Object.assign({}, DB[id], item);
   DB[id] = newItem;
   return newItem;

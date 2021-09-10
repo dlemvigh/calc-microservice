@@ -1,4 +1,5 @@
 import { receiveMessage } from "./aws/sqs";
+import { get } from "./api/api";
 
 async function getMessage() {
   try {
@@ -9,4 +10,5 @@ async function getMessage() {
   }
 }
 
-getMessage();
+// getMessage();
+get();

@@ -33,3 +33,4 @@ services:
     environment:
       - SQS_ENDPOINT=http://calc-jobs-queue:9324
       - QUEUE_ENDPOINT=http://calc-jobs-queue:9324/queue/default
+      - API_ENDPOINT=http://calc-api:80
