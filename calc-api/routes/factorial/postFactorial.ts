@@ -11,12 +11,13 @@ export const postFactorial: RequestHandler<{}, any, ReqBody> = async (
   res
 ) => {
   const { input } = req.body;
-  const { id } = await createFactorial({ input });
+  const item = await createFactorial({ input });
   const message = {
     version: "v1",
-    id,
+    id: item.id,
     input,
   };
   sendJSON(message);
-  res.sendStatus(200);
+  res.status(200);
+  res.json(item)
 };
