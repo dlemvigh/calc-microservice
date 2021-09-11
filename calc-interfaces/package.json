@@ -2,7 +2,10 @@
   "name": "@dlemvigh/calc-interfaces",
   "version": "1.0.0",
   "description": "Shared interfaces of the calc-microservice.",
-  "repository": "git@github.com:dlemvigh/calc-microservice.git",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dlemvigh/calc-microservice.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,5 +15,6 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "homepage": "https://github.com/dlemvigh/calc-microservice/calc-interface#readme"
 }
