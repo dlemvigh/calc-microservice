@@ -1,0 +1,16 @@
+{
+  "name": "@dlemvigh/calc-interfaces",
+  "version": "1.0.0",
+  "description": "Shared interfaces of the calc-microservice.",
+  "repository": "git@github.com:dlemvigh/calc-microservice.git",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
