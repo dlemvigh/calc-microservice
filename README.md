@@ -27,3 +27,17 @@ Queue of pending calculations
 ### Calc-worker
 
 Listens for jobs on the queue. Posts results back to calc-api.
+
+## How to run locally
+
+### How to run all
+
+There is a docker-compose file, so all services can be spun up using
+`cocker-compose build`
+`docker-compose up`
+
+### How to run all but one service
+
+To develop individual an service, in an integrated setup
+`docker-compose down <name of service>`
+and then follow how to run locally, for the service
