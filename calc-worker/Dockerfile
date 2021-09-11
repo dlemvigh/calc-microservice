@@ -15,6 +15,11 @@ COPY --from=build-deps /app ./
 COPY . ./
 RUN npm run build
 
+FROM node:14 as test
+WORKDIR /app
+COPY --from=build-deps /app ./
+COPY . ./
+RUN npm run test
 
 FROM node:14-alpine
 WORKDIR /app
