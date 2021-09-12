@@ -22,8 +22,7 @@ export function CalculationForm() {
 
     const handleSubmit = useCallback(async (values: FormValues, helpers: FormikHelpers<FormValues>) => {
         await mutate.mutateAsync({ input: values.input });
-        // await postFactorial({ input: values.input });
-        helpers.resetForm();
+        // helpers.resetForm();
     }, [mutate]);
 
     return (

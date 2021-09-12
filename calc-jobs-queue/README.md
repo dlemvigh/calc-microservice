@@ -1,7 +1,7 @@
-# Calc-jobs-queue
+# Calc-queue
 
 Holds all pending calculation jobs. Mimics a AWS SQS, using a the docker image roribio15/alpine-sqs
 
 ## How to run locally
 
-`docker-compose up calc-jobs-queue`
+`docker-compose up calc-queue`

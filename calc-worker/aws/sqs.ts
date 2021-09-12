@@ -1,4 +1,5 @@
-import AWS from "aws-sdk";
+import AWS, { SQS } from "aws-sdk";
+import { Job } from "../interfaces";
 
 const SQS_ENDPOINT = process.env.SQS_ENDPOINT || "http://localhost:9324";
 const QUEUE_ENDPOINT =
@@ -14,13 +15,7 @@ const sqs = new AWS.SQS({
   secretAccessKey: "notValidSecret",
 });
 
-export interface Message {
-  version: string;
-  id: number;
-  input: number;
-}
-
-export async function receiveMessage(): Promise<Message | undefined> {
+export async function receiveMessage(): Promise<SQS.Message & { json: Job }> {
   return new Promise((resolve, reject) => {
     sqs.receiveMessage(
       {
@@ -32,8 +27,25 @@ export async function receiveMessage(): Promise<Message | undefined> {
         if (!data?.Messages?.length) return reject("No data");
         const [message] = data.Messages;
         if (!message.Body) return reject("No body");
-        const json = JSON.parse(message.Body);
-        return resolve(json);
+        return resolve({
+          ...message,
+          json: JSON.parse(message.Body),
+        });
+      }
+    );
+  });
+}
+
+export async function deleteMessage(message: SQS.Message) {
+  return new Promise((resolve, reject) => {
+    sqs.deleteMessage(
+      {
+        QueueUrl: QUEUE_ENDPOINT,
+        ReceiptHandle: message.ReceiptHandle!,
+      },
+      (err, data) => {
+        if (err) return reject(err);
+        resolve(data);
       }
     );
   });

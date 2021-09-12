@@ -10,6 +10,7 @@ export const postFactorial: RequestHandler<{}, any, ReqBody> = async (
   req,
   res
 ) => {
+  console.log("post");
   const { input } = req.body;
   const item = await createFactorial({ input });
   const message = {
@@ -19,5 +20,5 @@ export const postFactorial: RequestHandler<{}, any, ReqBody> = async (
   };
   sendJSON(message);
   res.status(200);
-  res.json(item)
+  res.json(item);
 };

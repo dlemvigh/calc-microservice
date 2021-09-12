@@ -5,7 +5,7 @@ type Status = "pending" | "finished" | "error";
 export interface Item {
   id: number;
   input: number;
-  output?: number;
+  output?: string;
   status: Status;
   createdAt: Date;
   finishedAt?: Date;

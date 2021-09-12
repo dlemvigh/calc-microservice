@@ -15,7 +15,7 @@ app.get("/health", health);
 
 app.get("/factorial", getFactorial);
 app.post("/factorial", postFactorial);
-app.put("/factorial", putFactorial);
+app.put("/factorial/:id", putFactorial);
 
 const server = app.listen(PORT, () => {
   console.log(`server listening to port ${PORT}`);

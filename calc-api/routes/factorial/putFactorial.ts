@@ -6,8 +6,12 @@ export const putFactorial: RequestHandler<
   Item,
   Partial<Item>
 > = async (req, res) => {
+  console.log("put request", req.body);
   const id = Number(req.params.id);
-  const item: Partial<Item> = { ...req.body, status: "finished" };
+  const item: Partial<Item> = {
+    ...req.body,
+    status: "finished",
+  };
   const newItem = await updateFractorial(id, item);
 
   res.status(200);

@@ -20,7 +20,7 @@ Rest api for calculation jobs. Allows website to create jobs, and view status. A
 
 Stores calculation jobs, their status and results.
 
-### Calc-jobs-queue
+### Calc-queue
 
 Queue of pending calculations
 

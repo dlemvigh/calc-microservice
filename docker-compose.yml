@@ -16,12 +16,14 @@ services:
       context: calc-api
     environment:
       - PORT=80
-      - SQS_ENDPOINT=http://calc-jobs-queue:9324
-      - QUEUE_ENDPOINT=http://calc-jobs-queue:9324/queue/default
+      - SQS_ENDPOINT=http://calc-queue:9324
+      - QUEUE_ENDPOINT=http://calc-queue:9324/queue/default
     ports:
       - 8081:80
-  calc-jobs-queue:
-    container_name: calc-jobs-queue
+    depends_on:
+      - calc-queue
+  calc-queue:
+    container_name: calc-queue
     image: roribio16/alpine-sqs
     ports:
       - 9324:9324
@@ -31,6 +33,9 @@ services:
   calc-worker:
     build: ./calc-worker
     environment:
-      - SQS_ENDPOINT=http://calc-jobs-queue:9324
-      - QUEUE_ENDPOINT=http://calc-jobs-queue:9324/queue/default
+      - SQS_ENDPOINT=http://calc-queue:9324
+      - QUEUE_ENDPOINT=http://calc-queue:9324/queue/default
       - API_ENDPOINT=http://calc-api:80
+    depends_on:
+      - calc-queue
+      - calc-api
