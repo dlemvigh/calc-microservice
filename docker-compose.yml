@@ -39,3 +39,6 @@ services:
     depends_on:
       - calc-queue
       - calc-api
+    deploy:
+      mode: replicated
+      replicas: 3

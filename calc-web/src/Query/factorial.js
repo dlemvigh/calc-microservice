@@ -26,7 +26,6 @@ export async function postFactorial({ input }) {
     mode: "cors",
     body,
   });
-  console.log("res", res);
 }
 
 export function useFactorials() {

@@ -1,12 +1,10 @@
 import React from "react";
-// import { useAsync } from "react-async";
+import styled from "styled-components";
+
 import { useFactorials } from "../Query/factorial";
 import { Table, TableBody, TableRow, TableCell, TableHead } from "@material-ui/core"
 
 export function CalculationList() {
-    // const { data } = useAsync({
-    //     promiseFn: getFactorials
-    // })
     const { data } = useFactorials();
 
     return (
@@ -20,6 +18,8 @@ interface CalculationTableProps {
     data: {
         id: number;
         input: number;
+        output?: string;
+        createdAt: string;
     }[];
 }
 
@@ -40,15 +40,21 @@ function CalculationTable({ data }: CalculationTableProps) {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {data.map(item => (
+                {data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map(item => (
                     <TableRow key={item.id}>
                         <TableCell>{item.input}</TableCell>
-                        <TableCell>-</TableCell>
+                        <TableCell>{item.output ? <CalculationResult>{item.output}</CalculationResult> : "-"}</TableCell>
                         <TableCell>-</TableCell>
                     </TableRow>
                 ))}
             </TableBody>
         </Table>
     )
-
 }
+
+const CalculationResult = styled.div`
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 800px;
+`;

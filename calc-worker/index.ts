@@ -1,4 +1,4 @@
-import { receiveMessage } from "./aws/sqs";
+import { deleteMessage, receiveMessage } from "./aws/sqs";
 import { postResult } from "./api/api";
 import { factorial } from "./api/calc";
 
@@ -11,11 +11,13 @@ async function loop() {
   try {
     working = true;
     const msg = await receiveMessage();
-    console.log("received message", msg);
+    // console.log("received message", msg);
     const result = factorial(msg.json.input);
-    console.log("calculated result", result);
+    // console.log("calculated result", result);
     await postResult({ ...msg.json, output: result.toString() });
-    console.log("result posted");
+    // console.log("result posted");
+    await deleteMessage(msg);
+    // console.log("deleted message");
   } catch (err) {
     console.error("err", err);
   }
