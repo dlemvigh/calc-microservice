@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\dev\calc-microservice\kompose.exe convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: calc-queue
+  name: calc-queue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: calc-queue
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\dev\calc-microservice\kompose.exe convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: calc-queue
+    spec:
+      containers:
+      - image: roribio16/alpine-sqs
+        imagePullPolicy: ""
+        name: calc-queue
+        ports:
+        - containerPort: 9324
+        - containerPort: 9325
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

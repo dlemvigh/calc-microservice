@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: C:\dev\calc-microservice\kompose.exe convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: calc-web
+  name: calc-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: calc-web
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: C:\dev\calc-microservice\kompose.exe convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: calc-web
+    spec:
+      containers:
+        - args:
+            - nginx-debug
+            - -g
+            - daemon off;
+          image: calc-microservice_calc-web
+          imagePullPolicy: IfNotPresent
+          name: calc-web
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}
