@@ -40,7 +40,7 @@ function CalculationTable({ data }: CalculationTableProps) {
                 {data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map(item => (
                     <TableRow key={item.id}>
                         <TableCell>{item.input}</TableCell>
-                        <TableCell><CalculationResult value={item.output} maxLength={20} /></TableCell>
+                        <TableCell>{item.output || "-"}</TableCell>
                         <TableCell><TimeDiff from={item.createdAt} to={item.calcStartedAt} /></TableCell>
                         <TableCell><TimeDiff from={item.calcStartedAt} to={item.finishedAt} /></TableCell>
                     </TableRow>
@@ -49,24 +49,6 @@ function CalculationTable({ data }: CalculationTableProps) {
         </Table>
     )
 }
-
-interface CalculationResultProps {
-    value?: string;
-    maxLength: number;
-}
-
-function CalculationResult({ value, maxLength }: CalculationResultProps): JSX.Element {
-    if (!value) {
-        return <>-</>
-    }
-
-    if (value.length < maxLength) {
-        return <>value</>
-    }
-
-    return <>{value.substr(0, maxLength)}e<sup>{value.length - maxLength}</sup></>
-}
-
 interface CalculationTimeProps {
     from?: string;
     to?: string;
