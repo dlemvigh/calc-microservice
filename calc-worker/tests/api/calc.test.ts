@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { factorial } from "../../api/calc";
+import { factorial } from "../../src/api/calc";
 
 describe("calc", () => {
   const cases: [number, bigint][] = [
