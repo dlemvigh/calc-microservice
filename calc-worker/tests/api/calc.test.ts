@@ -23,3 +23,13 @@ describe("calc", () => {
     });
   });
 });
+
+describe("slow/hard calculations", function () {
+  this.timeout(10 * 1000);
+  const cases = [26, 30, 35, 40, 45, 50, 55, 60];
+  cases.forEach((input) => {
+    it(`${input}k!`, () => {
+      expect(factorial(input * 1000).toString().length).to.be.greaterThan(0);
+    });
+  });
+});

@@ -2,25 +2,47 @@ import { deleteMessage, receiveMessage } from "./aws/sqs";
 import { postResult } from "./api/api";
 import { factorial } from "./api/calc";
 
-const POLLING_INTERVAL = Number(process.env.POLLING_INTERVAL) || 10 * 1000;
+const POLLING_INTERVAL = Number(process.env.POLLING_INTERVAL) || 1 * 1000;
+const DEBUG = process.env.DEBUG === "true";
 
 let working = false;
 
+function log(message: any, ...other: any[]) {
+  if (DEBUG) {
+    print(message, ...other);
+  }
+}
+function error(message: any, ...other: any[]) {
+  print(message, ...other);
+}
+
+function print(message: any, ...other: any[]) {
+  console.log(new Date().toLocaleTimeString(), " | ", message, ...other);
+}
+
 async function loop() {
-  if (working) return;
+  if (working) {
+    console.log("working...");
+    return;
+  }
   try {
     working = true;
     const msg = await receiveMessage();
+    log("received message from queue");
     await postResult({ ...msg.json, calcStartedAt: new Date() });
-    const result = factorial(msg.json.input);
+    log("started calculation");
+    const result = await factorial(msg.json.input);
+    log("finished calculation", result.toString().length);
     await postResult({
       ...msg.json,
       finishedAt: new Date(),
       output: result.toString(),
     });
+    log("posted result to api");
     await deleteMessage(msg);
+    log("deleted message from queue");
   } catch (err) {
-    console.error("err", err);
+    error("err", err);
   }
   working = false;
 }
