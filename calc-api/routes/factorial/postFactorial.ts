@@ -18,7 +18,16 @@ export const postFactorial: RequestHandler<{}, any, ReqBody> = async (
     id: item.id,
     input,
   };
-  sendJSON(message);
-  res.status(200);
-  res.json(item);
+  try {
+    await sendJSON(message);
+    res.status(200);
+    res.json(item);
+  } catch (err) {
+    res.status(500);
+    if (err instanceof Error) {
+      res.send(err.message);
+    } else {
+      res.send(err);
+    }
+  }
 };

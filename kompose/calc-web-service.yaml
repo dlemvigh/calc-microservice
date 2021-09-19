@@ -1,19 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    kompose.cmd: C:\dev\calc-microservice\kompose.exe convert
-    kompose.version: 1.21.0 (992df58d8)
-  creationTimestamp: null
   labels:
     io.kompose.service: calc-web
   name: calc-web
 spec:
   ports:
-  - name: "8080"
-    port: 8080
-    targetPort: 80
+    - name: "8080"
+      port: 8080
+      targetPort: 80
+      nodePort: 30080
   selector:
     io.kompose.service: calc-web
+  type: NodePort
 status:
   loadBalancer: {}
