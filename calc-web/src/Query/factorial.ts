@@ -4,7 +4,17 @@ const API_ENDPOINT = "http://localhost:8081";
 const REFETCH_INTERVAL = 60 * 1000;
 const FACTORIALS_CACHE_KEY = "factorials";
 
-export async function getFactorials() {
+export interface Job {
+  id: number;
+  input: number;
+  output?: string;
+  status: string;
+  createdAt: string;
+  calcStartedAt?: string;
+  finishedAt?: string;
+}
+
+export async function getFactorials(): Promise<Job[]> {
   const res = await fetch(`${API_ENDPOINT}/factorial`, {
     headers: {
       Accept: "application/json",
@@ -15,7 +25,7 @@ export async function getFactorials() {
   return await res.json();
 }
 
-export async function postFactorial({ input }) {
+export async function postFactorial({ input }: Pick<Job, "input">) {
   const body = JSON.stringify({ input });
   const res = await fetch(`${API_ENDPOINT}/factorial`, {
     method: "POST",

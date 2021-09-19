@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 
-import { useFactorials } from "../Query/factorial";
+import { useFactorials, Job } from "../Query/factorial";
 import { Table, TableBody, TableRow, TableCell, TableHead } from "@material-ui/core"
 
 export function CalculationList() {
@@ -14,13 +14,7 @@ export function CalculationList() {
 }
 
 interface CalculationTableProps {
-    data: {
-        id: number;
-        input: number;
-        output?: string;
-        createdAt: string;
-        finishedAt?: string;
-    }[];
+    data: Job[];
 }
 
 function CalculationTable({ data }: CalculationTableProps) {
@@ -35,7 +29,10 @@ function CalculationTable({ data }: CalculationTableProps) {
                         n!
                     </TableCell>
                     <TableCell>
-                        time
+                        queue time
+                    </TableCell>
+                    <TableCell>
+                        work time
                     </TableCell>
                 </TableRow>
             </TableHead>
@@ -44,7 +41,8 @@ function CalculationTable({ data }: CalculationTableProps) {
                     <TableRow key={item.id}>
                         <TableCell>{item.input}</TableCell>
                         <TableCell><CalculationResult value={item.output} maxLength={20} /></TableCell>
-                        <TableCell><CalculationTime from={item.createdAt} to={item.finishedAt} /></TableCell>
+                        <TableCell><TimeDiff from={item.createdAt} to={item.calcStartedAt} /></TableCell>
+                        <TableCell><TimeDiff from={item.calcStartedAt} to={item.finishedAt} /></TableCell>
                     </TableRow>
                 ))}
             </TableBody>
@@ -70,12 +68,16 @@ function CalculationResult({ value, maxLength }: CalculationResultProps): JSX.El
 }
 
 interface CalculationTimeProps {
-    from: string;
+    from?: string;
     to?: string;
 }
-function CalculationTime({ from, to }: CalculationTimeProps): JSX.Element {
-    const createdDate = useMemo(() => new Date(from), [from]);
+function TimeDiff({ from, to }: CalculationTimeProps): JSX.Element {
+    const createdDate = useMemo(() => from && new Date(from), [from]);
     const finishedDate = useMemo(() => to && new Date(to), [to]);
+
+    if (!createdDate) {
+        return <>-</>;
+    }
 
     if (!finishedDate) {
         return <>-</>;

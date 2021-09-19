@@ -11,13 +11,14 @@ async function loop() {
   try {
     working = true;
     const msg = await receiveMessage();
-    // console.log("received message", msg);
+    await postResult({ ...msg.json, calcStartedAt: new Date() });
     const result = factorial(msg.json.input);
-    // console.log("calculated result", result);
-    await postResult({ ...msg.json, output: result.toString() });
-    // console.log("result posted");
+    await postResult({
+      ...msg.json,
+      finishedAt: new Date(),
+      output: result.toString(),
+    });
     await deleteMessage(msg);
-    // console.log("deleted message");
   } catch (err) {
     console.error("err", err);
   }
@@ -28,7 +29,7 @@ const interval = setInterval(loop, POLLING_INTERVAL);
 
 async function close(signal: NodeJS.Signals) {
   console.log(`Received signal to close ${signal}`);
-  // clearInterval(interval);
+  clearInterval(interval);
   process.exit();
 }
 

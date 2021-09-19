@@ -8,6 +8,7 @@ export interface Item {
   output?: string;
   status: Status;
   createdAt: Date;
+  calcStartedAt?: Date;
   finishedAt?: Date;
 }
 

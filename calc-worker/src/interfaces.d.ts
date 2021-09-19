@@ -3,4 +3,7 @@ export interface Job {
   id: number;
   input: number;
   output?: string | bigint;
+  calcStartedAt?: Date;
+  finishedAt?: Date;
+  status: string;
 }
