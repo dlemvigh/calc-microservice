@@ -41,7 +41,7 @@ function CalculationTable({ data }: CalculationTableProps) {
                     <TableRow key={item.id}>
                         <TableCell>{item.input}</TableCell>
                         <TableCell><CalculationResult value={item.output} maxLength={20} /></TableCell>
-                        <TableCell><TimeDiff from={item.createdAt} to={item.calcStartedAt || new Date().toString()} /></TableCell>
+                        <TableCell><TimeDiff from={item.createdAt} to={item.calcStartedAt} /></TableCell>
                         <TableCell><TimeDiff from={item.calcStartedAt} to={item.finishedAt} /></TableCell>
                     </TableRow>
                 ))}
