@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import styled from "styled-components";
 
 import { useFactorials } from "../Query/factorial";
 import { Table, TableBody, TableRow, TableCell, TableHead } from "@material-ui/core"
