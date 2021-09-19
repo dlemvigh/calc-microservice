@@ -1,9 +1,11 @@
 import express from "express";
 import cors from "cors";
+
 import { health } from "./routes/health";
 import { getFactorial } from "./routes/factorial/getFactorial";
 import { postFactorial } from "./routes/factorial/postFactorial";
 import { putFactorial } from "./routes/factorial/putFactorial";
+import websockets from "./routes/websockets";
 
 const PORT = process.env.PORT || 8081;
 
@@ -20,6 +22,8 @@ app.put("/factorial/:id", putFactorial);
 const server = app.listen(PORT, () => {
   console.log(`server listening to port ${PORT}`);
 });
+
+websockets(server as any);
 
 async function close(signal: NodeJS.Signals) {
   console.log(`Received signal to close ${signal}`);
