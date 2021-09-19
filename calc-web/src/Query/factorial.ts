@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
 const API_ENDPOINT = "http://localhost:8081";
-const REFETCH_INTERVAL = 60 * 1000;
+const REFETCH_INTERVAL = 5 * 1000;
 const FACTORIALS_CACHE_KEY = "factorials";
 
 export interface Job {
