@@ -1,16 +1,18 @@
 import { RequestHandler } from "express";
 import { SqsClient } from "../../aws/sqs";
 import { createFactorial } from "../../db/factorial";
-import { Config } from "../../config";
+import { ItemEventEmitter } from "../../db/ItemEventEmitter";
 interface ReqBody {
   input: number;
 }
 
-export function postFactorial(sqs: SqsClient): RequestHandler<{}, any, ReqBody> {
+export function postFactorial(sqs: SqsClient, ee: ItemEventEmitter): RequestHandler<{}, any, ReqBody> {
   return  async function(req, res) {
     console.log("post");
     const { input } = req.body;
     const item = await createFactorial({ input });
+    ee.emit("created", item);
+    
     const message = {
       version: "v1",
       id: item.id,

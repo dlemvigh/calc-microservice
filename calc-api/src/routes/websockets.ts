@@ -1,6 +1,7 @@
 import WebSocket, { Server } from "ws";
+import { ItemEventEmitter } from "../db/ItemEventEmitter";
 
-export default (httpServer: Server) => {
+export default (httpServer: Server, ee: ItemEventEmitter) => {
   const wsServer = new WebSocket.Server({
     noServer: true,
     path: "/websockets",
@@ -23,6 +24,12 @@ export default (httpServer: Server) => {
       }, 500);
     });
   });
+
+  ee.on("updated", (item) => {
+    wsServer.clients.forEach(ws => {
+      ws.send(JSON.stringify(item));
+    })
+  })
 
   return wsServer;
 };
