@@ -1,7 +1,9 @@
+import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
+const WS_ENDPOINT = "ws://localhost:8081/websockets";
 const API_ENDPOINT = "http://localhost:8081";
-const REFETCH_INTERVAL = 5 * 1000;
+const REFETCH_INTERVAL = 60 * 1000;
 const FACTORIALS_CACHE_KEY = "factorials";
 
 export interface Job {
@@ -57,4 +59,29 @@ export function useCreateFactorial() {
       queryClient.invalidateQueries(FACTORIALS_CACHE_KEY);
     },
   });
+}
+
+export function useFactorialSubscription() {
+  const queryClient = useQueryClient();
+  useEffect(() => {
+    const websocket = new WebSocket(WS_ENDPOINT);
+
+    websocket.onopen = () => {
+      console.log("connected");
+    };
+
+    websocket.onmessage = (event) => {
+      const newJob: Job = JSON.parse(event.data);
+      queryClient.setQueriesData(
+        FACTORIALS_CACHE_KEY,
+        (oldData: Job[] | undefined): Job[] => {
+          return (
+            oldData?.map((job) => (job.id === newJob.id ? newJob : job)) || []
+          );
+        }
+      );
+    };
+
+    return () => websocket.close();
+  }, [queryClient]);
 }

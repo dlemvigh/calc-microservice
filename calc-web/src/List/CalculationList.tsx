@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
 
-import { useFactorials, Job } from "../Query/factorial";
+import { useFactorials, useFactorialSubscription, Job } from "../Query/factorial";
 import { Table, TableBody, TableRow, TableCell, TableHead } from "@material-ui/core"
 
 export function CalculationList() {
     const { data } = useFactorials();
-
+    useFactorialSubscription();
     return (
         <>
             {data && <CalculationTable data={data} />}

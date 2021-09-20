@@ -39,3 +39,19 @@ export async function getFactorials(): Promise<Item[]> {
   const items = Object.values(DB);
   return items;
 }
+
+export async function clearFactorials(): Promise<void> {
+  for (const id of Object.keys(DB)) {
+    delete DB[Number(id)];
+  }
+}
+
+export const factorialRepository = {
+  createFactorial,
+  updateFractorial,
+  getFactorial,
+  getFactorials,
+  clearFactorials
+}
+
+export type FactorialRepository = typeof factorialRepository;
