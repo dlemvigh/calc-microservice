@@ -9,10 +9,11 @@ import websockets from "./routes/websockets";
 import { config } from "./config";
 import { sqsClient } from "./aws/sqs";
 import { ItemEventEmitter } from "./db/ItemEventEmitter";
+import { EventEmitter } from "events";
 import { factorialRepository } from "./db/factorial";
 // dependencies
 const sqs = sqsClient(config);
-const itemsEventEmitter = new ItemEventEmitter();
+const itemsEventEmitter: ItemEventEmitter = new EventEmitter();
 
 const app = express();
 app.use(cors());
@@ -21,7 +22,10 @@ app.use(express.json({ limit: "25mb" }));
 app.get("/health", health);
 
 app.get("/factorial", getFactorial(config, factorialRepository));
-app.post("/factorial", postFactorial(sqs, itemsEventEmitter, factorialRepository));
+app.post(
+  "/factorial",
+  postFactorial(sqs, itemsEventEmitter, factorialRepository)
+);
 app.put("/factorial/:id", putFactorial(itemsEventEmitter, factorialRepository));
 
 const server = app.listen(config.PORT, () => {

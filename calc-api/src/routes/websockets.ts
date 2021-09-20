@@ -26,10 +26,10 @@ export default (httpServer: Server, ee: ItemEventEmitter) => {
   });
 
   ee.on("updated", (item) => {
-    wsServer.clients.forEach(ws => {
+    wsServer.clients.forEach((ws) => {
       ws.send(JSON.stringify(item));
-    })
-  })
+    });
+  });
 
   return wsServer;
 };
