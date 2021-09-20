@@ -17,7 +17,7 @@ interface CalculationTableProps {
     data: Job[];
 }
 
-function CalculationTable({ data }: CalculationTableProps) {
+export function CalculationTable({ data }: CalculationTableProps) {
     return (
         <Table>
             <TableHead>
@@ -46,7 +46,7 @@ function CalculationTable({ data }: CalculationTableProps) {
                     </TableRow>
                 ))}
             </TableBody>
-        </Table>
+        </Table >
     )
 }
 interface CalculationTimeProps {

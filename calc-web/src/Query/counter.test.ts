@@ -1,4 +1,4 @@
-import { renderHook, act } from "@iting-library/react-hooks";
+import { renderHook, act } from "@testing-library/react-hooks";
 import faker from "faker";
 
 import { useCounter } from "./counter";

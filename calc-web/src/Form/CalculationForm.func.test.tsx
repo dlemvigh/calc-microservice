@@ -2,27 +2,28 @@ import { render, waitFor, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "react-query";
 import nock from "nock";
+
 import { CalculationForm } from "./CalculationForm";
 import { API_ENDPOINT } from "../Query/factorial";
 
 describe("Calculation form", () => {
     const client = new QueryClient();
-    it("has input label", () => {
 
-        const { getByLabelText } = render(
+    function renderWithQueryClient(ui: React.ReactElement) {
+        return render(
             <QueryClientProvider client={client}>
-                <CalculationForm />
+                {ui}
             </QueryClientProvider>
         );
+    }
+
+    it("has input label", () => {
+        const { getByLabelText } = renderWithQueryClient(<CalculationForm />);
         expect(getByLabelText("Input")).toBeVisible();
     })
 
     it("input must be positive", async () => {
-        const { getByLabelText } = render(
-            <QueryClientProvider client={client}>
-                <CalculationForm />
-            </QueryClientProvider>
-        );
+        const { getByLabelText } = renderWithQueryClient(<CalculationForm />);
 
         const input = getByLabelText("Input");
         await user.type(input, "-1");
@@ -33,11 +34,7 @@ describe("Calculation form", () => {
     })
 
     it("input must be an integer", async () => {
-        const { getByLabelText } = render(
-            <QueryClientProvider client={client}>
-                <CalculationForm />
-            </QueryClientProvider>
-        );
+        const { getByLabelText } = renderWithQueryClient(<CalculationForm />);
 
         const input = getByLabelText("Input");
         await user.type(input, "1.2");
@@ -48,11 +45,7 @@ describe("Calculation form", () => {
     })
 
     it("input is required", async () => {
-        const { getByLabelText } = render(
-            <QueryClientProvider client={client}>
-                <CalculationForm />
-            </QueryClientProvider>
-        );
+        const { getByLabelText } = renderWithQueryClient(<CalculationForm />);
 
         const input = getByLabelText("Input");
         await user.clear(input);
@@ -68,11 +61,7 @@ describe("Calculation form", () => {
             'Content-type': 'application/json'
         });
 
-        const { getByText } = render(
-            <QueryClientProvider client={client}>
-                <CalculationForm />
-            </QueryClientProvider>
-        );
+        const { getByText } = renderWithQueryClient(<CalculationForm />);
 
         const btn = getByText("calc");
         user.click(btn);
