@@ -45,3 +45,13 @@ export async function clearFactorials(): Promise<void> {
     delete DB[Number(id)];
   }
 }
+
+export const factorialRepository = {
+  createFactorial,
+  updateFractorial,
+  getFactorial,
+  getFactorials,
+  clearFactorials
+}
+
+export type FactorialRepository = typeof factorialRepository;

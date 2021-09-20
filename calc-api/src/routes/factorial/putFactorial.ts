@@ -1,9 +1,9 @@
 import { RequestHandler } from "express";
-import { Item, updateFractorial } from "../../db/factorial";
+import { FactorialRepository, Item } from "../../db/factorial";
 import { ItemEventEmitter } from "../../db/ItemEventEmitter";
 
 
-export function putFactorial(ee: ItemEventEmitter): RequestHandler<
+export function putFactorial(ee: ItemEventEmitter, repo: FactorialRepository): RequestHandler<
   { id: string },
   Item,
   Partial<Item>
@@ -12,7 +12,7 @@ export function putFactorial(ee: ItemEventEmitter): RequestHandler<
     console.log("put");
     const id = Number(req.params.id);
     const item: Partial<Item> = req.body;
-    const newItem = await updateFractorial(id, item);
+    const newItem = await repo.updateFractorial(id, item);
     ee.emit("updated", newItem);
     res.status(200);
     res.json(newItem);
