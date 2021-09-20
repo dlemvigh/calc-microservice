@@ -1,14 +1,12 @@
 import { deleteMessage, receiveMessage } from "./aws/sqs";
 import { postResult } from "./api/api";
 import { factorial } from "./api/calc";
-
-const POLLING_INTERVAL = Number(process.env.POLLING_INTERVAL) || 1 * 1000;
-const DEBUG = process.env.DEBUG === "true";
+import { config } from "./config";
 
 let working = false;
 
 function log(message: any, ...other: any[]) {
-  if (DEBUG) {
+  if (config.DEBUG) {
     print(message, ...other);
   }
 }
@@ -47,7 +45,7 @@ async function loop() {
   working = false;
 }
 
-const interval = setInterval(loop, POLLING_INTERVAL);
+const interval = setInterval(loop, config.POLLING_INTERVAL);
 
 async function close(signal: NodeJS.Signals) {
   console.log(`Received signal to close ${signal}`);

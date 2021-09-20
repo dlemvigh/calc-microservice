@@ -6,7 +6,7 @@ import { getFactorial } from "./routes/factorial/getFactorial";
 import { postFactorial } from "./routes/factorial/postFactorial";
 import { putFactorial } from "./routes/factorial/putFactorial";
 import websockets from "./routes/websockets";
-import config from "./config";
+import { config } from "./config";
 import { sqsClient } from "./aws/sqs";
 import { ItemEventEmitter } from "./db/ItemEventEmitter";
 
