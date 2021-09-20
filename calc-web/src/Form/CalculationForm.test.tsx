@@ -1,7 +1,9 @@
-import { render, waitFor, screen, } from "@testing-library/react";
+import { render, waitFor, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
-import { CalculationForm } from "./CalculationForm";
 import { QueryClient, QueryClientProvider } from "react-query";
+import nock from "nock";
+import { CalculationForm } from "./CalculationForm";
+import { API_ENDPOINT } from "../Query/factorial";
 
 describe("Calculation form", () => {
     const client = new QueryClient();
@@ -60,4 +62,23 @@ describe("Calculation form", () => {
         })
     })
 
+    it("submit triggers POST", async () => {
+        const scope = nock(API_ENDPOINT).post('/factorial').reply(200, { id: 1 }, {
+            'Access-Control-Allow-Origin': '*',
+            'Content-type': 'application/json'
+        });
+
+        const { getByText } = render(
+            <QueryClientProvider client={client}>
+                <CalculationForm />
+            </QueryClientProvider>
+        );
+
+        const btn = getByText("calc");
+        user.click(btn);
+
+        await waitFor(() => {
+            expect(scope.isDone()).toBe(true);
+        })
+    })
 })

@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
-const WS_ENDPOINT = "ws://localhost:8081/websockets";
-const API_ENDPOINT = "http://localhost:8081";
-const REFETCH_INTERVAL = 60 * 1000;
-const FACTORIALS_CACHE_KEY = "factorials";
+export const WS_ENDPOINT = "ws://localhost:8081/websockets";
+export const API_ENDPOINT = "http://localhost:8081";
+export const REFETCH_INTERVAL = 60 * 1000;
+export const FACTORIALS_CACHE_KEY = "factorials";
 
 export interface Job {
   id: number;
