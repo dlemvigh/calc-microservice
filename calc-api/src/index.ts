@@ -26,7 +26,10 @@ app.post(
   "/factorial",
   postFactorial(sqs, itemsEventEmitter, factorialRepository)
 );
-app.put("/factorial/:id", putFactorial(itemsEventEmitter, factorialRepository));
+app.put(
+  "/factorial/:id",
+  putFactorial(config, itemsEventEmitter, factorialRepository)
+);
 
 const server = app.listen(config.PORT, () => {
   console.log(`server listening to port ${config.PORT}`);
