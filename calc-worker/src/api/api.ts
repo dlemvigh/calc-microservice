@@ -1,16 +1,17 @@
 import fetch from "node-fetch";
+import { Config } from "../config";
 import { Job } from "../interfaces";
 
-const API_ENDPOINT = process.env.API_ENDPOINT || "http://localhost:8081";
-
-export async function postResult(item: Partial<Job> & Pick<Job, "id">) {
-  const url = `${API_ENDPOINT}/factorial/${item.id}`;
-  const body = JSON.stringify(item);
-  await fetch(url, {
-    method: "PUT",
-    body,
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export function postResult(config: Config) {
+  return async function (item: Partial<Job> & Pick<Job, "id">) {
+    const url = `${config.API_ENDPOINT}/factorial/${item.id}`;
+    const body = JSON.stringify(item);
+    return await fetch(url, {
+      method: "PUT",
+      body,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
 }

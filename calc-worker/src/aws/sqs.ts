@@ -1,25 +1,29 @@
-import AWS, { SQS } from "aws-sdk";
+import AWS from "aws-sdk";
+import { Config } from "../config";
 import { Job } from "../interfaces";
 
-const SQS_ENDPOINT = process.env.SQS_ENDPOINT || "http://localhost:9324";
-const QUEUE_ENDPOINT =
-  process.env.QUEUE_ENDPOINT || "http://localhost:9324/queue/default";
+export interface SqsClient {
+  receiveMessage(): Promise<AWS.SQS.Message>;
+  deleteMessage(message: AWS.SQS.Message): Promise<AWS.SQS.Message>;
+}
 
-AWS.config.update({
-  region: "eu-central-1",
-});
-const sqs = new AWS.SQS({
-  apiVersion: "2012-11-05",
-  endpoint: SQS_ENDPOINT,
-  accessKeyId: "notValidKey",
-  secretAccessKey: "notValidSecret",
-});
+export function sqsClient(config: Config): SqsClient {
+  AWS.config.update({
+    region: "eu-central-1",
+  });
 
-export async function receiveMessage(): Promise<SQS.Message & { json: Job }> {
+  const sqs = new AWS.SQS({
+    apiVersion: "2012-11-05",
+    endpoint: config.SQS_ENDPOINT,
+    accessKeyId: "notValidKey",
+    secretAccessKey: "notValidSecret",
+  });
+
+ async function receiveMessage(): Promise<AWS.SQS.Message & { json: Job }> {
   return new Promise((resolve, reject) => {
     sqs.receiveMessage(
       {
-        QueueUrl: QUEUE_ENDPOINT,
+        QueueUrl: config.QUEUE_ENDPOINT,
         MaxNumberOfMessages: 1,
       },
       (err, data) => {
@@ -36,11 +40,11 @@ export async function receiveMessage(): Promise<SQS.Message & { json: Job }> {
   });
 }
 
-export async function deleteMessage(message: SQS.Message) {
+async function deleteMessage(message: AWS.SQS.Message) {
   return new Promise((resolve, reject) => {
     sqs.deleteMessage(
       {
-        QueueUrl: QUEUE_ENDPOINT,
+        QueueUrl: config.QUEUE_ENDPOINT,
         ReceiptHandle: message.ReceiptHandle!,
       },
       (err, data) => {
@@ -49,4 +53,6 @@ export async function deleteMessage(message: SQS.Message) {
       }
     );
   });
+}
+return { receiveMessage, deleteMessage };
 }

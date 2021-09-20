@@ -1,9 +1,10 @@
-import { deleteMessage, receiveMessage } from "./aws/sqs";
+import { sqsClient } from "./aws/sqs";
 import { postResult } from "./api/api";
 import { factorial } from "./api/calc";
 import { config } from "./config";
 
 let working = false;
+const sqs = sqsClient(config);
 
 function log(message: any, ...other: any[]) {
   if (config.DEBUG) {
@@ -25,19 +26,19 @@ async function loop() {
   }
   try {
     working = true;
-    const msg = await receiveMessage();
+    const msg = await sqs.receiveMessage();
     log("received message from queue");
-    await postResult({ ...msg.json, calcStartedAt: new Date() });
+    await postResult(config)({ ...msg.json, calcStartedAt: new Date() });
     log("started calculation");
     const result = await factorial(msg.json.input);
     log("finished calculation", result.toString().length);
-    await postResult({
+    await postResult(config)({
       ...msg.json,
       finishedAt: new Date(),
       output: result.toString(),
     });
     log("posted result to api");
-    await deleteMessage(msg);
+    await sqs.deleteMessage(msg);
     log("deleted message from queue");
   } catch (err) {
     error("err", err);
