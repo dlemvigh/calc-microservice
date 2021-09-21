@@ -18,6 +18,7 @@
       "ts-node/register"
     ],
     "watch-files": [
+      "src/**/*.ts",
       "tests/**/*.ts"
     ]
   },

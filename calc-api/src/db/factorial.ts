@@ -18,11 +18,10 @@ interface Database {
 
 const DB: Database = {};
 
-export async function createFactorial({ input }: { input: number }) {
+export async function createFactorial(item: Partial<Item>) {
   const id = ++counter;
-  const item: Item = { id, input, createdAt: new Date(), status: "pending" };
-  DB[id] = item;
-  return item;
+  DB[id] = { ...item, id } as Item;
+  return DB[id];
 }
 
 export async function updateFractorial(id: number, item: Partial<Item>) {
@@ -44,6 +43,7 @@ export async function clearFactorials(): Promise<void> {
   for (const id of Object.keys(DB)) {
     delete DB[Number(id)];
   }
+  counter = 0;
 }
 
 export const factorialRepository = {
