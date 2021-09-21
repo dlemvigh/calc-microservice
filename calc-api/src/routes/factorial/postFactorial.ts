@@ -2,23 +2,29 @@ import { RequestHandler } from "express";
 import { SqsClient } from "../../aws/sqs";
 import { FactorialRepository } from "../../db/factorial";
 import { ItemEventEmitter } from "../../db/ItemEventEmitter";
-interface ReqBody {
+
+export interface ReqBody {
   input: number;
 }
 
-export function postFactorial(sqs: SqsClient, ee: ItemEventEmitter, repo: FactorialRepository): RequestHandler<{}, any, ReqBody> {
-  return  async function(req, res) {
-    console.log("post");
-    const { input } = req.body;
-    const item = await repo.createFactorial({ input });
-    ee.emit("created", item);
-    
-    const message = {
-      version: "v1",
-      id: item.id,
-      input,
-    };
+export function postFactorial(
+  sqs: SqsClient,
+  ee: ItemEventEmitter,
+  repo: FactorialRepository
+): RequestHandler<{}, any, ReqBody> {
+  return async function (req, res) {
     try {
+      console.log("post", req.body);
+      const { input } = req.body;
+      const item = await repo.createFactorial({ input });
+      ee.emit("created", item);
+
+      const message = {
+        version: "v1",
+        id: item.id,
+        input,
+      };
+
       await sqs.sendJSON(message);
       res.status(200);
       res.json(item);
@@ -30,5 +36,5 @@ export function postFactorial(sqs: SqsClient, ee: ItemEventEmitter, repo: Factor
         res.send(err);
       }
     }
-  }
+  };
 }

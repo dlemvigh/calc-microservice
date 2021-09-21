@@ -51,7 +51,7 @@ export const factorialRepository = {
   updateFractorial,
   getFactorial,
   getFactorials,
-  clearFactorials
-}
+  clearFactorials,
+};
 
 export type FactorialRepository = typeof factorialRepository;
