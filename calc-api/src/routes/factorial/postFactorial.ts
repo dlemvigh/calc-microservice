@@ -16,7 +16,11 @@ export function postFactorial(
     try {
       console.log("post", req.body);
       const { input } = req.body;
-      const item = await repo.createFactorial({ input });
+      const item = await repo.createFactorial({
+        input,
+        createdAt: new Date(),
+        status: "pending",
+      });
       ee.emit("created", item);
 
       const message = {

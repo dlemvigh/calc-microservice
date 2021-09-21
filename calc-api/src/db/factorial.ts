@@ -17,10 +17,9 @@ interface Database {
 }
 
 const DB: Database = {};
-
-export async function createFactorial(item: Partial<Item>) {
+export async function createFactorial(item: Omit<Item, "id">) {
   const id = ++counter;
-  DB[id] = { ...item, id } as Item;
+  DB[id] = { ...item, id };
   return DB[id];
 }
 
