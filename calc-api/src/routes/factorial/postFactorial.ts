@@ -14,7 +14,7 @@ export function postFactorial(
 ): RequestHandler<{}, any, ReqBody> {
   return async function (req, res) {
     try {
-      console.log("post", req.body);
+      // console.log("post", req.body);
       const { input } = req.body;
       const item = await repo.createFactorial({
         input,

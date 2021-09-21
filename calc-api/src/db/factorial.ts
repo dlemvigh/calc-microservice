@@ -1,6 +1,7 @@
 let counter = 0;
 
-type Status = "pending" | "finished" | "error";
+export const StatusValues = ["pending", "finished", "error"] as const;
+export type Status = typeof StatusValues[number];
 
 export interface Item {
   id: number;
