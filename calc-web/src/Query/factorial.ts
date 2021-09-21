@@ -75,9 +75,12 @@ export function useFactorialSubscription() {
       queryClient.setQueriesData(
         FACTORIALS_CACHE_KEY,
         (oldData: Job[] | undefined): Job[] => {
-          return (
-            oldData?.map((job) => (job.id === newJob.id ? newJob : job)) || []
-          );
+          if (oldData?.some((job) => job.id === newJob.id)) {
+            return (
+              oldData?.map((job) => (job.id === newJob.id ? newJob : job)) || []
+            );
+          }
+          return oldData ? [newJob, ...oldData] : [newJob];
         }
       );
     };
