@@ -8,8 +8,6 @@ services:
     ports:
       - 8080:80
     command: [nginx-debug, "-g", "daemon off;"]
-  #calc-api-db:
-  #image: postgres:12.8-alpine
   calc-api:
     container_name: calc-api
     build:
@@ -44,3 +42,7 @@ services:
     deploy:
       mode: replicated
       replicas: 3
+  # cypress:
+  #   image: cypress/included:4.4.0
+  #   volumes:
+  #     - "$PWD/:/integration-test"
