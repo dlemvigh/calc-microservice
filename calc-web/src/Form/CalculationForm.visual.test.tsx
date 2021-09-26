@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 
 import { CalculationForm } from "./CalculationForm";
 
-describe("Calculation table", () => {
+describe("CalculationForm visual regressions", () => {
 
     const client = new QueryClient();
 

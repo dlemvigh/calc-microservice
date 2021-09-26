@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { CalculationTable } from "./CalculationList";
 import { generateImage } from "jsdom-screenshot";
 
-describe("Calculation table", () => {
+describe("CalculationList visual regression", () => {
 
     it("empty list has no visual regression", async () => {
         render(<CalculationTable data={[]} />);

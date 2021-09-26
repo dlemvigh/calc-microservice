@@ -6,7 +6,7 @@ import nock from "nock";
 import { CalculationForm } from "./CalculationForm";
 import { API_ENDPOINT } from "../Query/factorial";
 
-describe("Calculation form", () => {
+describe("CalculationForm functional tests", () => {
     const client = new QueryClient();
 
     function renderWithQueryClient(ui: React.ReactElement) {
