@@ -8,11 +8,11 @@ WORKDIR /app
 COPY package* ./
 RUN npm ci --production
 
-
 FROM node:16.10 as build
 WORKDIR /app
 COPY --from=build-deps /app ./
 COPY . ./
+RUN npm run test
 RUN npm run build
 
 
