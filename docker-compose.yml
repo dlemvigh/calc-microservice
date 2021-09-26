@@ -5,6 +5,8 @@ services:
     container_name: calc-web
     build:
       context: calc-web
+    depends_on:
+      - calc-api
     ports:
       - 8080:80
     command: [nginx-debug, "-g", "daemon off;"]
@@ -42,7 +44,3 @@ services:
     deploy:
       mode: replicated
       replicas: 3
-  # cypress:
-  #   image: cypress/included:4.4.0
-  #   volumes:
-  #     - "$PWD/:/integration-test"

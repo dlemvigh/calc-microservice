@@ -8,6 +8,8 @@ COPY . ./
 
 FROM node:14 as build
 WORKDIR /app
+ARG REACT_APP_BASE_URL
+ENV REACT_APP_BASE_URL $REACT_APP_BASE_URL
 COPY --from=deps /app ./
 RUN npm run build
 

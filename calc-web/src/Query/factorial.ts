@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
-export const WS_ENDPOINT = "ws://localhost:8081/websockets";
-export const API_ENDPOINT = "http://localhost:8081";
+export const BASE_URL = process.env.REACT_APP_BASE_URL || "localhost:8081";
+export const API_ENDPOINT = `http://${BASE_URL}`;
+export const WS_ENDPOINT = `ws://${BASE_URL}/websockets`;
+
 export const REFETCH_INTERVAL = 60 * 1000;
 export const FACTORIALS_CACHE_KEY = "factorials";
 
