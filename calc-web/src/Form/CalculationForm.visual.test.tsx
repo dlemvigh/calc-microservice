@@ -27,6 +27,7 @@ describe("CalculationForm visual regressions", () => {
         const { getByLabelText } = renderWithQueryClient(<CalculationForm />);
 
         const input = getByLabelText("Input");
+        await user.clear(input);
         await user.type(input, "-1");
 
         await waitFor(() => {
