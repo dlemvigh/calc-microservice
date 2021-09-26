@@ -1,12 +1,23 @@
 import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
-export const BASE_URL = process.env.REACT_APP_BASE_URL || "localhost:8081";
+export const BASE_URL =
+  process.env.REACT_APP_BASE_URL || getFallbackHost(window.location.host);
 export const API_ENDPOINT = `http://${BASE_URL}`;
 export const WS_ENDPOINT = `ws://${BASE_URL}/websockets`;
 
 export const REFETCH_INTERVAL = 60 * 1000;
 export const FACTORIALS_CACHE_KEY = "factorials";
+
+function getFallbackHost(host: string) {
+  switch (host) {
+    case "calc-web":
+      return "calc-api";
+    case "localhost":
+    default:
+      return "localhost:8081";
+  }
+}
 
 export interface Job {
   id: number;

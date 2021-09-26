@@ -5,9 +5,9 @@ services:
     extends:
       file: ../docker-compose.yml
       service: calc-web
-    build:
-      args:
-        - REACT_APP_BASE_URL=calc-api
+    # build:
+    #   args:
+    #     - REACT_APP_BASE_URL=calc-api
   calc-api:
     extends:
       file: ../docker-compose.yml
@@ -31,4 +31,4 @@ services:
       - CYPRESS_baseUrl=http://calc-web:80
     working_dir: /e2e
     volumes:
-      - "$PWD:/e2e"
+      - ".:/e2e"
