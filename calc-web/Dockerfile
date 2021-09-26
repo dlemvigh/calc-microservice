@@ -11,13 +11,8 @@ WORKDIR /app
 ARG REACT_APP_BASE_URL
 ENV REACT_APP_BASE_URL $REACT_APP_BASE_URL
 COPY --from=deps /app ./
+RUN npm run test -- --watchAll=false
 RUN npm run build
-
-
-FROM node:16.10 as test
-WORKDIR /app
-COPY --from=deps /app ./
-RUN npm run test --watchAll=false
 
 
 FROM nginx:1.21-alpine
