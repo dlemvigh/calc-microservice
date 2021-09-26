@@ -44,3 +44,15 @@ services:
     deploy:
       mode: replicated
       replicas: 3
+  cypress:
+    image: "cypress/included:8.4.1"
+    profiles:
+      - ci
+    depends_on:
+      - calc-web
+      - calc-worker
+    environment:
+      - CYPRESS_baseUrl=http://calc-web:80
+    working_dir: /e2e
+    volumes:
+      - "./integration-test:/e2e"
