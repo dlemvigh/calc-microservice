@@ -37,12 +37,12 @@ export function CalculationTable({ data }: CalculationTableProps) {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map(item => (
+                {data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((item, index) => (
                     <TableRow key={item.id}>
-                        <TableCell>{item.input}</TableCell>
-                        <TableCell>{item.output || "-"}</TableCell>
-                        <TableCell><TimeDiff from={item.createdAt} to={item.calcStartedAt} /></TableCell>
-                        <TableCell><TimeDiff from={item.calcStartedAt} to={item.finishedAt} /></TableCell>
+                        <TableCell data-testid={`row-${index}-input`}>{item.input}</TableCell>
+                        <TableCell data-testid={`row-${index}-output`}>{item.output || "-"}</TableCell>
+                        <TableCell data-testid={`row-${index}-queue-time`}><TimeDiff from={item.createdAt} to={item.calcStartedAt} /></TableCell>
+                        <TableCell data-testid={`row-${index}-work-time`}><TimeDiff from={item.calcStartedAt} to={item.finishedAt} /></TableCell>
                     </TableRow>
                 ))}
             </TableBody>

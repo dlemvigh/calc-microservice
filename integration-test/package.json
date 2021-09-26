@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "cypress open",
+    "test:edge": "cypress run --browser edge",
+    "test:chrome": "cypress run --browser chrome",
+    "test:firefox": "cypress run --browser firefox",
     "test:ci": "docker-compose up --exit-code-from cypress"
   },
   "keywords": [],

@@ -29,14 +29,49 @@ describe("factorio app", () => {
     );
   });
 
-  it.only("5!", () => {
+  it("5!", () => {
+    const input = 5;
+    const output = "120";
+
     cy.intercept("POST", "**/factorial").as("createJob");
 
-    cy.get("#factorial-input").clear().type("2000").type("{enter}");
+    cy.get("#factorial-input").clear().type(input).type("{enter}");
 
     cy.wait("@createJob").should(({ request, response }) => {
-      expect(request.body).to.eql({ input: 2000 });
+      expect(request.body).to.eql({ input });
       expect(response.statusCode).to.equal(200);
     });
+
+    cy.get("[data-testid=row-0-input]").should("have.text", input);
+    cy.get("[data-testid=row-0-output]").should("have.text", output);
+    cy.get("[data-testid=row-0-queue-time]")
+      .invoke("text")
+      .should("match", /\d+m?s/);
+    cy.get("[data-testid=row-0-work-time]")
+      .invoke("text")
+      .should("match", /\d+m?s/);
+  });
+
+  it("42!", () => {
+    const input = 42;
+    const output = "14050061177528798985e32";
+
+    cy.intercept("POST", "**/factorial").as("createJob");
+
+    cy.get("#factorial-input").clear().type(input).type("{enter}");
+
+    cy.wait("@createJob").should(({ request, response }) => {
+      expect(request.body).to.eql({ input });
+      expect(response.statusCode).to.equal(200);
+    });
+
+    cy.get("[data-testid=row-0-input]").should("have.text", input);
+    cy.get("[data-testid=row-0-output]").should("have.text", output);
+    cy.get("[data-testid=row-0-queue-time]")
+      .invoke("text")
+      .should("match", /\d+m?s/);
+    cy.get("[data-testid=row-0-work-time]")
+      .invoke("text")
+      .should("match", /\d+m?s/);
   });
 });
