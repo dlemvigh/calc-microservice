@@ -2,7 +2,7 @@ import "mocha";
 import { expect } from "chai";
 import { trunkOutput } from "../../src/routes/factorial/util";
 
-describe.only("trunk output - max length 3", () => {
+describe("trunk output - max length 3", () => {
   const cases: [string, string][] = [
     ["1", "1"],
     ["12", "12"],
