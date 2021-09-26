@@ -22,16 +22,16 @@ export function CalculationTable({ data }: CalculationTableProps) {
         <Table>
             <TableHead>
                 <TableRow>
-                    <TableCell>
+                    <TableCell style={{ width: "6em" }}>
                         n
                     </TableCell>
                     <TableCell>
                         n!
                     </TableCell>
-                    <TableCell>
+                    <TableCell style={{ width: "6em" }}>
                         queue time
                     </TableCell>
-                    <TableCell>
+                    <TableCell style={{ width: "5em" }}>
                         work time
                     </TableCell>
                 </TableRow>
@@ -39,7 +39,7 @@ export function CalculationTable({ data }: CalculationTableProps) {
             <TableBody>
                 {data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((item, index) => (
                     <TableRow key={item.id}>
-                        <TableCell data-testid={`row-${index}-input`}>{item.input}</TableCell>
+                        <TableCell data-testid={`row-${index}-input`}>{item.input.toLocaleString("da-dk")}</TableCell>
                         <TableCell data-testid={`row-${index}-output`}>{item.output || "-"}</TableCell>
                         <TableCell data-testid={`row-${index}-queue-time`}><TimeDiff from={item.createdAt} to={item.calcStartedAt} /></TableCell>
                         <TableCell data-testid={`row-${index}-work-time`}><TimeDiff from={item.calcStartedAt} to={item.finishedAt} /></TableCell>
