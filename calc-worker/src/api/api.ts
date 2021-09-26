@@ -13,5 +13,5 @@ export function postResult(config: Config) {
         "Content-Type": "application/json",
       },
     });
-  }
+  };
 }
