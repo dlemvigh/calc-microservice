@@ -43,7 +43,7 @@ services:
       - calc-api
     deploy:
       mode: replicated
-      replicas: 3
+      replicas: 1
   cypress:
     image: "cypress/included:8.4.1"
     profiles:
