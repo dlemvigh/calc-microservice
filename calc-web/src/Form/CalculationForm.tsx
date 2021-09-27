@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
 import { Formik, FormikHelpers } from "formik";
 import { Button } from "@material-ui/core";
+import styled from "styled-components";
 import { CalculationInput } from "./CalculationInput";
 import * as Yup from "yup";
-import { Row } from "../Components/Flex";
 import { useCreateFactorial } from "../Query/factorial";
 
 const validationSchema = Yup.object().shape({
@@ -33,7 +33,7 @@ export function CalculationForm() {
         >
             {({ handleSubmit }) => (
                 <form onSubmit={handleSubmit}>
-                    <Row style={{ justifyContent: "space-between", alignItems: "flex-end" }}>
+                    <Row>
                         <CalculationInput />
                         <Button variant="contained" color="primary" type="submit">calc</Button>
                     </Row>
@@ -42,3 +42,9 @@ export function CalculationForm() {
         </Formik>
     )
 }
+
+const Row = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+`
