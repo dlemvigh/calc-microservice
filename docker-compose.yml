@@ -45,7 +45,7 @@ services:
       mode: replicated
       replicas: 1
   cypress:
-    image: "cypress/included:8.4.1"
+    image: "cypress/included:8.5.0"
     profiles:
       - ci
     depends_on:
