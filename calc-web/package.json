@@ -6,8 +6,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:func": "npm test func.test",
-    "test:visual": "npm test visual.test",
+    "test:func": "react-scripts test func.test",
+    "test:visual": "react-scripts test visual.test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
