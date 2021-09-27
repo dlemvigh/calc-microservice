@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
 export const BASE_URL =
@@ -79,11 +79,14 @@ export function useCreateFactorial() {
 
 export function useFactorialSubscription() {
   const queryClient = useQueryClient();
+  const [status, setStatus] = useState("pending");
+  const [count, setCount] = useState(0);
+
   useEffect(() => {
     const websocket = new WebSocket(WS_ENDPOINT);
 
     websocket.onopen = () => {
-      console.log("connected");
+      setStatus("open");
     };
 
     websocket.onmessage = (event) => {
@@ -99,8 +102,11 @@ export function useFactorialSubscription() {
           return oldData ? [newJob, ...oldData] : [newJob];
         }
       );
+      setCount((x) => x + 1);
     };
 
     return () => websocket.close();
   }, [queryClient]);
+
+  return { status, count };
 }
