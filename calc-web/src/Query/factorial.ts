@@ -38,6 +38,14 @@ export async function getFactorials(): Promise<Job[]> {
     mode: "cors",
   });
   return await res.json();
+
+  // const promise = fetch(`${API_ENDPOINT}/factorial`);
+  // console.log("promise", promise);
+  // const res = await promise;
+  // console.log("res", res);
+  // const data = await res.json();
+  // console.log("data", data);
+  // return data;
 }
 
 export async function postFactorial({ input }: Pick<Job, "input">) {
@@ -55,14 +63,9 @@ export async function postFactorial({ input }: Pick<Job, "input">) {
 }
 
 export function useFactorials() {
-  const { data, error, isLoading } = useQuery(
-    FACTORIALS_CACHE_KEY,
-    getFactorials,
-    {
-      refetchInterval: REFETCH_INTERVAL,
-    }
-  );
-  return { data, error, isLoading };
+  return useQuery(FACTORIALS_CACHE_KEY, getFactorials, {
+    refetchInterval: REFETCH_INTERVAL,
+  });
 }
 
 export function useCreateFactorial() {
