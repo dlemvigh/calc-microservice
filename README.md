@@ -33,11 +33,28 @@ Listens for jobs on the queue. Posts results back to calc-api.
 ### How to run all
 
 There is a docker-compose file, so all services can be spun up using
-`cocker-compose build`
+`docker-compose build`
 `docker-compose up`
+
+#### Run in background
+
+Up will display the logs of all services, prefixed with their container name. To run the services in the background run `docker-compose up -d`
 
 ### How to run all but one service
 
-To develop individual an service, in an integrated setup
-`docker-compose down <name of service>`
+To develop individual an service, in an integrated setup `docker-compose up -d <name-of-service> <name-of-service> ...` or `docker-compose up -d && docker-compose down <name of service>`
 and then follow how to run locally, for the service
+
+## How to test
+
+All services run tests, just before the build step, in their Dockerfiles. Running `docker-compose build` therefor also runs tests.
+
+### Test coverage
+
+Each project can generate a test coverage report, by running `npm run test:coverage`. It outputs to the terminal, and a html report.
+
+### Integration test
+
+There is a cypress integration test, that can be run with `docker-compose run cypress`. 
+
+It is part of the services listed in the docker-compose file, but is ignore by `up`, unless explicitly mentioned by name or profile.
