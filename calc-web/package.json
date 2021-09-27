@@ -6,6 +6,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --watchAll=false --coverage",
     "test:func": "react-scripts test func.test",
     "test:visual": "react-scripts test visual.test",
     "eject": "react-scripts eject"
