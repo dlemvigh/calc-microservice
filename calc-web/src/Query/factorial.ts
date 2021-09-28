@@ -23,7 +23,7 @@ export interface Job {
   id: number;
   input: number;
   output?: string;
-  status: string;
+  status?: string;
   createdAt: string;
   calcStartedAt?: string;
   finishedAt?: string;

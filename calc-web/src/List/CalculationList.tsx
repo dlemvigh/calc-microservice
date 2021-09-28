@@ -88,8 +88,8 @@ function TimeDiff({ from, to }: CalculationTimeProps): JSX.Element {
     }
 
     if (diff < 60 * 60 * 1000) {
-        return <>{Math.floor(diff / (60 * 1000))}s</>
+        return <>{Math.floor(diff / (60 * 1000))}m</>
     }
 
-    return <>{Math.floor(diff / (60 * 60 * 1000))}</>
+    return <>{Math.floor(diff / (60 * 60 * 1000))}h</>
 }
