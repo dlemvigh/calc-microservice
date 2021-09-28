@@ -16,4 +16,4 @@ export function postResult(config: Config) {
   };
 }
 
-export type PostResult = typeof postResult;
+export type PostResult = ReturnType<typeof postResult>;
