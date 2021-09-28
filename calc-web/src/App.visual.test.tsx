@@ -41,14 +41,14 @@ describe("App", () => {
             .reply(200, [{ id: 1, input: 5, output: "120" }]);
 
         const client = new QueryClient();
-        await render(
+        const { getByTestId } = await render(
             <QueryClientProvider client={client}>
                 <App />
             </QueryClientProvider>
         );
 
         await waitFor(() => scope.done());
-        console.log(client)
+        await waitFor(() => getByTestId("row-0-input"))
 
         const screenshot = await generateImage();
         expect(screenshot).toMatchImageSnapshot();
