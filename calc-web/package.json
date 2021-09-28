@@ -6,9 +6,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "test:coverage": "react-scripts test --watchAll=false --coverage",
-    "test:func": "react-scripts test func.test",
+    "test:func": "react-scripts test func.test hook.test",
     "test:visual": "react-scripts test visual.test",
+    "test:coverage": "react-scripts test --watchAll=false --coverage",
+    "test:func:coverage": "react-scripts test --watchAll=false --coverage func.test hook.test",
+    "test:visual:coverage": "react-scripts test --watchAll=false --coverage visual.test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -69,6 +71,10 @@
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}",
       "!<rootDir>/node_modules/"
+    ],
+    "coveragePathIgnorePatterns": [
+      "src/index.tsx",
+      "src/reportWebVitals.ts"
     ]
   }
 }
