@@ -15,3 +15,5 @@ export function postResult(config: Config) {
     });
   };
 }
+
+export type PostResult = ReturnType<typeof postResult>;

@@ -7,3 +7,5 @@ export function factorial(n: number): bigint {
 
   return result;
 }
+
+export type Factorial = typeof factorial;
