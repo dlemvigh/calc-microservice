@@ -1,9 +1,9 @@
 import { SqsClient } from "./aws/sqs";
 import { PostResult } from "./api/api";
-import { factorial } from "./api/calc";
+import { Factorial } from "./api/calc";
 import { Config } from "./config";
 
-export function worker(config: Config, sqs: SqsClient, postResult: PostResult) {
+export function worker(config: Config, sqs: SqsClient, factorial: Factorial, postResult: PostResult) {
   let working = false;
 
   function log(message: any, ...other: any[]) {
@@ -22,28 +22,33 @@ export function worker(config: Config, sqs: SqsClient, postResult: PostResult) {
   return async function doWork() {
     if (working) {
       console.log("working...");
-      return;
+      return false;
     }
 
     try {
       working = true;
       const msg = await sqs.receiveMessage();
-      log("received message from queue");
-      await postResult(config)({ ...msg.json, calcStartedAt: new Date() });
+      log("received message from queue", msg);
+      await postResult({ 
+        id: msg.json.id, 
+        calcStartedAt: new Date() 
+      });
       log("started calculation");
       const result = await factorial(msg.json.input);
-      log("finished calculation", result.toString().length);
-      await postResult(config)({
-        ...msg.json,
+      log("finished calculation");
+      await postResult({
+        id: msg.json.id,
         finishedAt: new Date(),
         output: result.toString(),
       });
       log("posted result to api");
       await sqs.deleteMessage(msg);
       log("deleted message from queue");
+      return true;
     } catch (err) {
       error("err", err);
+    } finally {
+      working = false;
     }
-    working = false;
   }
 }

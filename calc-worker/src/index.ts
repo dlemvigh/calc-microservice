@@ -1,11 +1,12 @@
 import { sqsClient } from "./aws/sqs";
 import { postResult } from "./api/api";
 import { worker } from "./worker";
-
+import { factorial } from "./api/calc";
 import { config } from "./config";
 
 const sqs = sqsClient(config);
-const loop = worker(config, sqs, postResult);
+const api = postResult(config)
+const loop = worker(config, sqs, factorial, api);
 
 const interval = setInterval(loop, config.POLLING_INTERVAL);
 
