@@ -38,17 +38,29 @@ export function CalculationTable({ data }: CalculationTableProps) {
             </TableHead>
             <TableBody>
                 {data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((item, index) => (
-                    <TableRow key={item.id}>
-                        <TableCell data-testid={`row-${index}-input`}>{item.input.toLocaleString("da-dk")}</TableCell>
-                        <TableCell data-testid={`row-${index}-output`}>{item.output || "-"}</TableCell>
-                        <TableCell data-testid={`row-${index}-queue-time`}><TimeDiff from={item.createdAt} to={item.calcStartedAt} /></TableCell>
-                        <TableCell data-testid={`row-${index}-work-time`}><TimeDiff from={item.calcStartedAt} to={item.finishedAt} /></TableCell>
-                    </TableRow>
+                    <CalculationRow key={item.id} index={index} item={item} />
                 ))}
             </TableBody>
         </Table >
     )
 }
+
+interface CalculationRowProps {
+    index: number;
+    item: Job;
+}
+
+export function CalculationRow({ index, item }: CalculationRowProps) {
+    return (
+        <TableRow key={item.id}>
+            <TableCell data-testid={`row-${index}-input`}>{item.input.toLocaleString("da-dk")}</TableCell>
+            <TableCell data-testid={`row-${index}-output`}>{item.output || "-"}</TableCell>
+            <TableCell data-testid={`row-${index}-queue-time`}><TimeDiff from={item.createdAt} to={item.calcStartedAt} /></TableCell>
+            <TableCell data-testid={`row-${index}-work-time`}><TimeDiff from={item.calcStartedAt} to={item.finishedAt} /></TableCell>
+        </TableRow>
+    );
+}
+
 interface CalculationTimeProps {
     from?: string;
     to?: string;
