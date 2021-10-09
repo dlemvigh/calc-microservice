@@ -5,7 +5,7 @@ import sinon from "sinon";
 
 import { Config } from "../src/config";
 import { SqsClient } from "../src/aws/sqs";
-import { PostResult } from "../src/api/api";
+import { ApiClient } from "../src/api/api";
 import { factorial, Factorial } from "../src/api/calc";
 import { worker } from "../src/worker";
 
@@ -21,26 +21,32 @@ describe("worker loop", () => {
   };
 
   it("does nothing if there is no work", () => {
+    // arrange
     const config = {} as Config;
 
     const sqs = {
       receiveMessage: sinon.fake(() => Promise.reject("No data")),
       deleteMessage: sinon.fake(),
     };
-    const api = sinon.fake();
+    const api = {
+      postResult: sinon.fake(),
+    };
 
+    // act
     const doWork = worker(
       config,
       sqs as SqsClient,
       factorial,
-      api as PostResult
+      api as ApiClient
     );
     doWork();
 
-    expect(api).not.to.have.been.called;
+    // assert
+    expect(api.postResult).not.to.have.been.called;
   });
 
   it("does work", async () => {
+    // arrange
     const clock = sinon.useFakeTimers();
     const id = Math.ceil(Math.random() * 1000);
     const input = 5;
@@ -61,24 +67,27 @@ describe("worker loop", () => {
       receiveMessage: sinon.fake(() => Promise.resolve(msg)),
       deleteMessage: sinon.fake(),
     };
-    const postResult = sinon.fake();
-    // postResult();
+    const api = {
+      postResult: sinon.fake(),
+    };
 
+    // act
     const doWork = worker(
       config,
       sqs as SqsClient,
       factorial,
-      postResult as PostResult
+      api as ApiClient
     );
     const didWork = await doWork();
 
+    // assert
     expect(didWork).to.be.true;
-    expect(postResult).to.have.been.calledTwice;
-    expect(postResult).to.have.been.calledWith({
+    expect(api.postResult).to.have.been.calledTwice;
+    expect(api.postResult).to.have.been.calledWith({
       id,
       calcStartedAt: new Date(),
     });
-    expect(postResult).to.have.been.calledWith({
+    expect(api.postResult).to.have.been.calledWith({
       id,
       output,
       finishedAt: new Date(),
@@ -109,17 +118,18 @@ describe("worker loop", () => {
       deleteMessage: sinon.fake(),
     };
 
-    const postResult = sinon.fake();
-    // postResult();
+    const api = {
+      postResult: sinon.fake(),
+    };
 
+    // act
     const doWork = worker(
       config,
       sqs as SqsClient,
       factorial as any,
-      postResult as PostResult
+      api as ApiClient
     );
 
-    // act
     const workPromise = doWork();
     const didWork = await doWork();
 

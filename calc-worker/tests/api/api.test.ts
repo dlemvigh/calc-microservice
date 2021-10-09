@@ -3,7 +3,7 @@ import { expect } from "chai";
 import nock from "nock";
 
 import { Config } from "../../src/config";
-import { postResult } from "../../src/api/api";
+import { apiClientFactory } from "../../src/api/api";
 import { Job } from "../../src/interfaces";
 
 describe("api", () => {
@@ -24,11 +24,13 @@ describe("api", () => {
       status: "some-status",
     } as Job;
 
+    const client = apiClientFactory(config);
+
     const scope = nock(API_ENDPOINT)
       .put(`/factorial/${id}`, JSON.stringify(job))
       .reply(200);
 
-    await postResult(config)(job);
+    await client.postResult(job);
 
     expect(scope.isDone()).to.be.true;
   });
