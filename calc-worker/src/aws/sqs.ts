@@ -7,7 +7,7 @@ export interface SqsClient {
   deleteMessage(message: AWS.SQS.Message): Promise<{}>;
 }
 
-export function sqsClient(config: Config): SqsClient {
+export function sqsClientFactory(config: Config): SqsClient {
   AWS.config.update({
     region: "eu-central-1",
   });

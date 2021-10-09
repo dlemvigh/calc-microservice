@@ -1,9 +1,14 @@
 import { SqsClient } from "./aws/sqs";
-import { PostResult } from "./api/api";
+import { ApiClient } from "./api/api";
 import { Factorial } from "./api/calc";
 import { Config } from "./config";
 
-export function worker(config: Config, sqs: SqsClient, factorial: Factorial, postResult: PostResult) {
+export function worker(
+  config: Config,
+  sqs: SqsClient,
+  factorial: Factorial,
+  client: ApiClient
+) {
   let working = false;
 
   function log(message: any, ...other: any[]) {
@@ -29,14 +34,14 @@ export function worker(config: Config, sqs: SqsClient, factorial: Factorial, pos
       working = true;
       const msg = await sqs.receiveMessage();
       log("received message from queue", msg);
-      await postResult({ 
-        id: msg.json.id, 
-        calcStartedAt: new Date() 
+      await client.postResult({
+        id: msg.json.id,
+        calcStartedAt: new Date(),
       });
       log("started calculation");
       const result = await factorial(msg.json.input);
       log("finished calculation");
-      await postResult({
+      await client.postResult({
         id: msg.json.id,
         finishedAt: new Date(),
         output: result.toString(),
@@ -50,5 +55,5 @@ export function worker(config: Config, sqs: SqsClient, factorial: Factorial, pos
     } finally {
       working = false;
     }
-  }
+  };
 }
