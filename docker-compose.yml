@@ -44,6 +44,10 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+  calc-worker-dotnet:
+    build: ./calc-worker-dotnet
+    profiles:
+      - dotnet
   cypress:
     image: "cypress/included:8.6.0"
     profiles:
