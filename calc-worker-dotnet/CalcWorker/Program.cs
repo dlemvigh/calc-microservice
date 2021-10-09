@@ -6,7 +6,6 @@ namespace CalcWorker
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Foo");
             Console.WriteLine("Hello World!");
         }
     }
