@@ -5,6 +5,8 @@ using Amazon.Runtime;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using CalcWorker.Api;
+using CalcWorker.Config;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace CalcWorker.Queue
@@ -18,27 +20,31 @@ namespace CalcWorker.Queue
     public class QueueClient : IQueueClient
     {
         private readonly AmazonSQSClient sqsClient;
-        public QueueClient()
+        private readonly IEnvConfig config;
+        private readonly ILogger<QueueClient> logger;
+        public QueueClient(ILoggerFactory loggerFactory, IEnvConfig config)
         {
-            sqsClient = new AmazonSQSClient(
+            this.sqsClient = new AmazonSQSClient(
                 "notValidKey",
                 "notValidSecret",
                 new AmazonSQSConfig
                 {
-                    ServiceURL = "http://localhost:9324"
+                    ServiceURL = config.SqsEndpoint
                 });
-
+            this.logger = loggerFactory.CreateLogger<QueueClient>();
+            this.config = config;
         }
 
         public async Task<MessageDTO> ReceiveMessageAsync()
         {
+            logger.LogDebug("Receive messages");
             var response = await sqsClient.ReceiveMessageAsync(new ReceiveMessageRequest
             {
-                QueueUrl = "http://localhost:9324/queue/default",
+                QueueUrl = config.QueueEndpoint,
                 MaxNumberOfMessages = 1,
 
             });
-
+            logger.LogInformation($"Received {response.Messages.Count} message(s)");
             if (response.Messages.Count == 1)
             {
                 var message = response.Messages[0];
@@ -54,7 +60,9 @@ namespace CalcWorker.Queue
 
         public async Task DeleteMessageAsync(MessageDTO message)
         {
-            await sqsClient.DeleteMessageAsync("http://localhost:9324/queue/default", message.ReceiptHandle);
+            logger.LogDebug("Delete message");
+            await sqsClient.DeleteMessageAsync(config.QueueEndpoint, message.ReceiptHandle);
+            logger.LogDebug("Message deleted");
         }
 
     }

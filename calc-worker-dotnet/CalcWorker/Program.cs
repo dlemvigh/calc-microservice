@@ -17,20 +17,9 @@ namespace CalcWorker
             logger.LogInformation("Worker started");
 
             var calc = services.GetService<ICalculator>();
-            var input = 7;
+            var input = new Random().Next(1, 7);
             var output = calc.Factorial(input);
             logger.LogInformation($"{input}! = {output}");
-
-            var queueClient = services.GetService<IQueueClient>();
-            var message = queueClient.ReceiveMessageAsync().GetAwaiter().GetResult();
-            if (message != null)
-            {
-                Console.WriteLine("message" + message.Body);
-            }
-            else
-            {
-                Console.WriteLine("no messages");
-            }
 
             Console.WriteLine(""); // Flush console
         }
