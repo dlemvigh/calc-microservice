@@ -1,8 +1,9 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using CalcWorker.Work;
+using CalcWorker.Config;
 using CalcWorker.Queue;
+using CalcWorker.Work;
 
 namespace CalcWorker
 {
