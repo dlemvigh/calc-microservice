@@ -4,15 +4,12 @@ namespace CalcWorker.Work
 {
     public interface ICalculator
     {
-        static long Factorial(int n)
-        {
-            throw new NotImplementedException();
-        }
+        long Factorial(int n);
     }
 
     public class Calculator : ICalculator
     {
-        public static long Factorial(int n)
+        public long Factorial(int n)
         {
             if (n < 0)
             {

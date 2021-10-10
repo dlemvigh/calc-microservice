@@ -1,6 +1,6 @@
 using System;
-using CalcWorker.Work;
 using NUnit.Framework;
+using CalcWorker.Work;
 
 namespace CalcWorker.Test.Work
 {
@@ -14,12 +14,14 @@ namespace CalcWorker.Test.Work
         [TestCase(5, ExpectedResult = 120)]
         public long FactorialTest(int n)
         {
-            return Calculator.Factorial(n);
+            var calculator = new Calculator();
+            return calculator.Factorial(n);
         }
 
         public void FactorialTest_ThrowsForNegativeNumbers()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => Calculator.Factorial(-1));
+            var calculator = new Calculator();
+            Assert.Throws<ArgumentOutOfRangeException>(() => calculator.Factorial(-1));
         }
     }
 }

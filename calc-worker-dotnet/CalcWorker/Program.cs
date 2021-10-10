@@ -1,4 +1,7 @@
 ﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using CalcWorker.Work;
 
 namespace CalcWorker
 {
@@ -6,7 +9,17 @@ namespace CalcWorker
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var services = DependencyInjection.ConfigureServices();
+
+            var logger = services.GetService<ILoggerFactory>().CreateLogger<Program>();
+            logger.LogInformation("Worker started");
+
+            var calc = services.GetService<ICalculator>();
+            var input = 7;
+            var output = calc.Factorial(input);
+            logger.LogInformation($"{input}! = {output}");
+
+            Console.WriteLine(""); // Flush console
         }
     }
 }
