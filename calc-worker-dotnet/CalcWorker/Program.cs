@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using CalcWorker.Work;
+using CalcWorker.Queue;
 
 namespace CalcWorker
 {
@@ -18,6 +19,17 @@ namespace CalcWorker
             var input = 7;
             var output = calc.Factorial(input);
             logger.LogInformation($"{input}! = {output}");
+
+            var queueClient = services.GetService<IQueueClient>();
+            var message = queueClient.ReceiveMessageAsync().GetAwaiter().GetResult();
+            if (message != null)
+            {
+                Console.WriteLine("message" + message.Body);
+            }
+            else
+            {
+                Console.WriteLine("no messages");
+            }
 
             Console.WriteLine(""); // Flush console
         }
