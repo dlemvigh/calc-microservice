@@ -1,7 +1,4 @@
-using System;
 using System.Threading.Tasks;
-using Amazon;
-using Amazon.Runtime;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using CalcWorker.Api;
@@ -19,18 +16,12 @@ namespace CalcWorker.Queue
 
     public class QueueClient : IQueueClient
     {
-        private readonly AmazonSQSClient sqsClient;
+        private readonly IAmazonSQS sqsClient;
         private readonly IEnvConfig config;
         private readonly ILogger<QueueClient> logger;
-        public QueueClient(ILoggerFactory loggerFactory, IEnvConfig config)
+        public QueueClient(IAmazonSQS sqsClient, ILoggerFactory loggerFactory, IEnvConfig config)
         {
-            this.sqsClient = new AmazonSQSClient(
-                "notValidKey",
-                "notValidSecret",
-                new AmazonSQSConfig
-                {
-                    ServiceURL = config.SqsEndpoint
-                });
+            this.sqsClient = sqsClient;
             this.logger = loggerFactory.CreateLogger<QueueClient>();
             this.config = config;
         }
