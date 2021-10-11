@@ -18,7 +18,7 @@ namespace CalcWorker.Config
             // Configure your services here
             services.AddSingleton<IApiClient, ApiClient>();
             services.AddSingleton<ICalculator, Calculator>();
-            services.AddSingleton<IQueueClient, QueueClient>();
+            services.AddSingleton<IQueueClientFactory, QueueClientFactory>();
             services.AddSingleton<IEnvConfig>(EnvConfigFactory.Create());
             services.AddLogging(logConfig =>
                 logConfig.AddSimpleConsole(formatConfig =>
