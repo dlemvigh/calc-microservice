@@ -9,7 +9,7 @@ namespace CalcWorker.Api
 {
     public interface IApiClient
     {
-        Task PostResultAsync(JobDTO job);
+        Task<JobDTO> PostResultAsync(JobDTO job);
     }
 
     public class ApiClient : IApiClient
@@ -23,15 +23,19 @@ namespace CalcWorker.Api
             this.logger = loggerFactory.CreateLogger<ApiClient>();
             this.config = config;
         }
-        public async Task PostResultAsync(JobDTO job)
+        public async Task<JobDTO> PostResultAsync(JobDTO job)
         {
             using (var httpClient = httpClientFactory.CreateClient())
             {
                 var endpoint = $"{config.ApiEndpoint}/factorial/{job.Id}";
-                var json = JsonConvert.SerializeObject(job);
+                var jsonSettings = new JsonSerializerSettings { 
+                    NullValueHandling = NullValueHandling.Ignore,
+                };
+                var json = JsonConvert.SerializeObject(job, jsonSettings);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 logger.LogInformation($"PUT {data}");
-                await httpClient.PutAsync(endpoint, data);
+                var res = await httpClient.PutAsync(endpoint, data);
+                return JsonConvert.DeserializeObject<JobDTO>(await res.Content.ReadAsStringAsync());
             }
         }
     }
