@@ -19,7 +19,7 @@ namespace CalcWorker.Config
             services.AddSingleton<IApiClient, ApiClient>();
             services.AddSingleton<ICalculator, Calculator>();
             services.AddSingleton<IQueueClient, QueueClient>();
-            services.AddSingleton<IEnvConfig, EnvConfig>();
+            services.AddSingleton<IEnvConfig>(EnvConfigFactory.Create());
             services.AddLogging(logConfig =>
                 logConfig.AddSimpleConsole(formatConfig =>
                 {

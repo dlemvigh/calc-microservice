@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using CalcWorker.Config;
 using CalcWorker.Queue;
 using CalcWorker.Work;
+using Newtonsoft.Json;
 
 namespace CalcWorker
 {
@@ -20,6 +21,9 @@ namespace CalcWorker
             var input = new Random().Next(1, 7);
             var output = calc.Factorial(input);
             logger.LogInformation($"{input}! = {output}");
+
+            var config = services.GetService<IEnvConfig>();
+            Console.WriteLine("config" + JsonConvert.SerializeObject(config));
 
             Console.WriteLine(""); // Flush console
         }
