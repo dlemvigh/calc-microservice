@@ -45,7 +45,10 @@ namespace CalcWorker.Work {
             logger.LogInformation("Update job - calculation started");
             await apiClient.PostResultAsync(job);
 
-            job.Output = calculator.Factorial(job.Input);
+            if (!job.Input.HasValue) {
+                throw new ArgumentException("Cannot calculater factorial without input value", nameof(job.Input));
+            }
+            job.Output = calculator.Factorial(job.Input.Value);
             job.FinishedAt = new DateTime();
             logger.LogInformation("Update job - calculation finished");
             await apiClient.PostResultAsync(job);
