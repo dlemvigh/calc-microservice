@@ -16,9 +16,6 @@ namespace CalcWorker.Config
             var services = new ServiceCollection();
 
             // Configure your services here
-            services.AddSingleton<IApiClient, ApiClient>();
-            services.AddSingleton<ICalculator, Calculator>();
-            services.AddSingleton<IQueueClientFactory, QueueClientFactory>();
             services.AddSingleton<IEnvConfig>(EnvConfigFactory.Create());
             services.AddLogging(logConfig =>
                 logConfig.AddSimpleConsole(formatConfig =>
@@ -27,6 +24,11 @@ namespace CalcWorker.Config
                     formatConfig.TimestampFormat = "[hh:mm:ss] ";
                 })
             );
+
+            services.AddSingleton<IApiClient, ApiClient>();
+            services.AddSingleton<ICalculator, Calculator>();
+            services.AddSingleton<IQueueClientFactory, QueueClientFactory>();
+            services.AddSingleton<IQueueClient>(s => s.GetService<IQueueClientFactory>().Create());
             services.AddHttpClient();
 
             var serviceProvider = services.BuildServiceProvider();
