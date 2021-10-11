@@ -1,10 +1,10 @@
-FROM node:16.10 as deps
+FROM node:16.11 as deps
 WORKDIR /app
 COPY package* ./
 RUN npm ci
 COPY . ./
 
-FROM node:16.10 as build
+FROM node:16.11 as build
 WORKDIR /app
 ARG REACT_APP_BASE_URL
 ENV REACT_APP_BASE_URL $REACT_APP_BASE_URL
