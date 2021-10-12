@@ -16,14 +16,14 @@ namespace CalcWorker.Test.Work
         [TestCase(5, ExpectedResult = 120)]
         public long FactorialTest(int n)
         {
-            var logger = new NullLogger<Calculator>();
+            var logger = new TestLogger<Calculator>();
             var calculator = new Calculator(logger);
             return calculator.Factorial(n);
         }
 
         public void FactorialTest_ThrowsForNegativeNumbers()
         {
-            var logger = new NullLogger<Calculator>();
+            var logger = new TestLogger<Calculator>();
             var calculator = new Calculator(logger);
             Assert.Throws<ArgumentOutOfRangeException>(() => calculator.Factorial(-1));
         }

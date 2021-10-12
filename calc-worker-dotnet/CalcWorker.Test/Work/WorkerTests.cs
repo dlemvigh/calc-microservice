@@ -15,7 +15,7 @@ namespace CalcWorker.Test.Work
       public async Task DoWork_WithNoMessages_DoesNothing()
       {
           // arrange
-          var logger = new NullLogger<Worker>();
+          var logger = new TestLogger<Worker>();
           var queueClient = new Mock<IQueueClient>();
           var apiClient = new Mock<IApiClient>();
           var calculator = new Mock<ICalculator>();
@@ -53,7 +53,7 @@ namespace CalcWorker.Test.Work
           var calculateTime = new DateTime(2020, 1, 1, 12, 0, 0);
           var finishTime = new DateTime(2020, 1, 1, 12, 5, 0);
 
-          // var logger = new NullLogger<Worker>();
+          // var logger = new TestLogger<Worker>();
           var logger = new TestLogger<Worker>();
           var queueClient = new Mock<IQueueClient>();
           var apiClient = new Mock<IApiClient>();

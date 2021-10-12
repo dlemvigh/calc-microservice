@@ -29,7 +29,7 @@ namespace CalcWorker.Test.Api {
 				})
 				.ReturnsResponse("{ \"id\": 42 }");
 
-			var logger = new NullLogger<ApiClient>();
+			var logger = new TestLogger<ApiClient>();
 
 			var config = new EnvConfig {
 				ApiEndpoint = endpoint
