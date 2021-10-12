@@ -4,6 +4,7 @@ using CalcWorker.Api;
 using CalcWorker.Config;
 using CalcWorker.Queue;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace CalcWorker.Work {
     public interface IWorker {
@@ -12,23 +13,23 @@ namespace CalcWorker.Work {
 
     public class Worker : IWorker {
         private readonly ILogger<Worker> logger;
-        private readonly IEnvConfig config;
         private readonly IQueueClient queueClient;
         private readonly IApiClient apiClient;
         private readonly ICalculator calculator;
+        private readonly IDateTimeProvider dateTimeProvider;
 
         public Worker(
-            ILoggerFactory loggerFactory, 
-            IEnvConfig config, 
+            ILogger<Worker> logger, 
             IQueueClient queueClient, 
             IApiClient apiClient, 
-            ICalculator calculator
+            ICalculator calculator,
+            IDateTimeProvider dateTimeProvider
         ) {
-            this.logger = loggerFactory.CreateLogger<Worker>();
-            this.config = config;
+            this.logger = logger;
             this.queueClient = queueClient;
             this.apiClient = apiClient;
             this.calculator = calculator;
+            this.dateTimeProvider = dateTimeProvider;
         }
 
         public async Task DoWork() {
@@ -41,16 +42,18 @@ namespace CalcWorker.Work {
             }
 
             var job = message.Job;
-            job.CalcStartedAt = new DateTime();
+            job.CalcStartedAt = dateTimeProvider.Now;
             logger.LogInformation("Update job - calculation started");
+            logger.LogDebug(JsonConvert.SerializeObject(job));
             await apiClient.PostResultAsync(job);
 
             if (!job.Input.HasValue) {
                 throw new ArgumentException("Cannot calculater factorial without input value", nameof(job.Input));
             }
             job.Output = calculator.Factorial(job.Input.Value);
-            job.FinishedAt = new DateTime();
+            job.FinishedAt = dateTimeProvider.Now;
             logger.LogInformation("Update job - calculation finished");
+            logger.LogDebug(JsonConvert.SerializeObject(job));
             await apiClient.PostResultAsync(job);
 
             await queueClient.DeleteMessageAsync(message);

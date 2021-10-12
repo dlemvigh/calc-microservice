@@ -25,6 +25,7 @@ namespace CalcWorker.Config
                 })
             );
 
+            services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
             services.AddSingleton<IApiClient, ApiClient>();
             services.AddSingleton<ICalculator, Calculator>();
             services.AddSingleton<IQueueClientFactory, QueueClientFactory>();
