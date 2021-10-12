@@ -19,10 +19,10 @@ namespace CalcWorker.Queue
         private readonly IAmazonSQS sqsClient;
         private readonly IEnvConfig config;
         private readonly ILogger<QueueClient> logger;
-        public QueueClient(IAmazonSQS sqsClient, ILoggerFactory loggerFactory, IEnvConfig config)
+        public QueueClient(IAmazonSQS sqsClient, ILogger<QueueClient> logger, IEnvConfig config)
         {
             this.sqsClient = sqsClient;
-            this.logger = loggerFactory.CreateLogger<QueueClient>();
+            this.logger = logger;
             this.config = config;
         }
 

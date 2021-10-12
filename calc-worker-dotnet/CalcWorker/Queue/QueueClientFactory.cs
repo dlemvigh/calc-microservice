@@ -12,11 +12,11 @@ namespace CalcWorker.Queue
 	public class QueueClientFactory : IQueueClientFactory
 	{
 		private readonly IEnvConfig config;
-		private readonly ILoggerFactory loggerFactory;
-		public QueueClientFactory(IEnvConfig config, ILoggerFactory loggerFactory)
+		private readonly ILogger<QueueClient> logger;
+		public QueueClientFactory(IEnvConfig config, ILogger<QueueClient> logger)
 		{
 			this.config = config;
-			this.loggerFactory = loggerFactory;
+			this.logger = logger;
 		}
 
 		public IQueueClient Create()
@@ -30,7 +30,7 @@ namespace CalcWorker.Queue
 				}
 			);
 
-			var queueClient = new QueueClient(sqsClient, loggerFactory, config);
+			var queueClient = new QueueClient(sqsClient, logger, config);
 			
 			return queueClient;
 		}

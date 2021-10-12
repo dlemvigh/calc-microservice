@@ -8,8 +8,6 @@ namespace CalcWorker.Test.Work
 {
     public class CalculatorTests
     {
-        private static ILoggerFactory nullLogger = new NullLoggerFactory();
-
         [TestCase(0, ExpectedResult = 1)]
         [TestCase(1, ExpectedResult = 1)]
         [TestCase(2, ExpectedResult = 2)]
@@ -18,13 +16,15 @@ namespace CalcWorker.Test.Work
         [TestCase(5, ExpectedResult = 120)]
         public long FactorialTest(int n)
         {
-            var calculator = new Calculator(nullLogger);
+            var logger = new NullLogger<Calculator>();
+            var calculator = new Calculator(logger);
             return calculator.Factorial(n);
         }
 
         public void FactorialTest_ThrowsForNegativeNumbers()
         {
-            var calculator = new Calculator(nullLogger);
+            var logger = new NullLogger<Calculator>();
+            var calculator = new Calculator(logger);
             Assert.Throws<ArgumentOutOfRangeException>(() => calculator.Factorial(-1));
         }
     }

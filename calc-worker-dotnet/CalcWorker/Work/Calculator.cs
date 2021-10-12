@@ -11,9 +11,9 @@ namespace CalcWorker.Work
     public class Calculator : ICalculator
     {
         private ILogger<Calculator> logger;
-        public Calculator(ILoggerFactory loggerFactory)
+        public Calculator(ILogger<Calculator> logger)
         {
-            logger = loggerFactory.CreateLogger<Calculator>();
+            this.logger = logger;
         }
 
         public long Factorial(int n)

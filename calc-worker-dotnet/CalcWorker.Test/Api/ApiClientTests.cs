@@ -29,14 +29,14 @@ namespace CalcWorker.Test.Api {
 				})
 				.ReturnsResponse("{ \"id\": 42 }");
 
-			var loggerFactory = new NullLoggerFactory();
+			var logger = new NullLogger<ApiClient>();
 
 			var config = new EnvConfig {
 				ApiEndpoint = endpoint
 			};
 
 			// act
-			var apiClient = new ApiClient(httpClientFactory.Object, loggerFactory, config);
+			var apiClient = new ApiClient(httpClientFactory.Object, logger, config);
 			var res = await apiClient.PostResultAsync(job);			
 
 			// assert

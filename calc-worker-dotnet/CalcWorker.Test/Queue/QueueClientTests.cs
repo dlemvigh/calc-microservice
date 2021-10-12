@@ -15,7 +15,7 @@ namespace CalcWorker.Test.Queue {
 		public async Task ReceiveMessageAsyncTest_NoMessages_ShouldReturnNull() {
 			// arrange
 			var sqsClient = new Mock<IAmazonSQS>();
-			var loggerFactory = new NullLoggerFactory();
+			var logger = new NullLogger<QueueClient>();
 			var config = new EnvConfig {
 				QueueEndpoint = "http://some-queue.io/my/queue",
 			};
@@ -31,7 +31,7 @@ namespace CalcWorker.Test.Queue {
 				.Verifiable();
 
 			// act
-			var client = new QueueClient(sqsClient.Object, loggerFactory, config);
+			var client = new QueueClient(sqsClient.Object, logger, config);
 			var message = await client.ReceiveMessageAsync();
 
 			// assert			
@@ -45,7 +45,7 @@ namespace CalcWorker.Test.Queue {
 			var messageBody = "{ id: 42, input: 5 }";
 
 			var sqsClient = new Mock<IAmazonSQS>();
-			var loggerFactory = new NullLoggerFactory();
+			var logger = new NullLogger<QueueClient>();
 			var config = new EnvConfig {
 				QueueEndpoint = "http://some-queue.io/my/queue",
 			};
@@ -65,7 +65,7 @@ namespace CalcWorker.Test.Queue {
 				.Verifiable();
 
 			// act
-			var client = new QueueClient(sqsClient.Object, loggerFactory, config);
+			var client = new QueueClient(sqsClient.Object, logger, config);
 			var message = await client.ReceiveMessageAsync();
 
 			// assert			

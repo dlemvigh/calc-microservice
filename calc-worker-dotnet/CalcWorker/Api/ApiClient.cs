@@ -17,10 +17,10 @@ namespace CalcWorker.Api
         private readonly IHttpClientFactory httpClientFactory;
         private readonly ILogger<ApiClient> logger;
         private readonly IEnvConfig config;
-        public ApiClient(IHttpClientFactory httpClientFactory, ILoggerFactory loggerFactory, IEnvConfig config)
+        public ApiClient(IHttpClientFactory httpClientFactory, ILogger<ApiClient> logger, IEnvConfig config)
         {
             this.httpClientFactory = httpClientFactory;
-            this.logger = loggerFactory.CreateLogger<ApiClient>();
+            this.logger = logger;
             this.config = config;
         }
         public async Task<JobDTO> PostResultAsync(JobDTO job)

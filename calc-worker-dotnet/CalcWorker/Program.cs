@@ -14,7 +14,7 @@ namespace CalcWorker
         {
             var services = DependencyInjection.ConfigureServices();
 
-            var logger = services.GetService<ILoggerFactory>().CreateLogger<Program>();
+            var logger = services.GetService<ILogger<Program>>();
             logger.LogInformation("Worker started");
 
             var calc = services.GetService<ICalculator>();
