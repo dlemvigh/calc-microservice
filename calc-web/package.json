@@ -51,7 +51,7 @@
     "@types/jest-image-snapshot": "4.3.1",
     "@types/jsdom-screenshot": "3.2.1",
     "@types/node": "16.10.1",
-    "@types/react": "17.0.27",
+    "@types/react": "17.0.29",
     "@types/react-dom": "17.0.9",
     "@types/styled-components": "5.1.15",
     "date-fns": "2.25.0",
