@@ -44,13 +44,27 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+  calc-worker-dotnet:
+    build: ./calc-worker-dotnet
+    environment:
+      - SQS_ENDPOINT=http://calc-queue:9324
+      - QUEUE_ENDPOINT=http://calc-queue:9324/queue/default
+      - API_ENDPOINT=http://calc-api:80
+      - POLLING_INTERVAL=1000
+      - DEBUG=false
+    depends_on:
+      - calc-queue
+      - calc-api
+    deploy:
+      mode: replicated
+      replicas: 1
   cypress:
     image: "cypress/included:8.6.0"
     profiles:
       - ci
     depends_on:
       - calc-web
-      - calc-worker
+      - calc-worker-dotnet
     environment:
       - CYPRESS_baseUrl=http://calc-web:80
     working_dir: /e2e
