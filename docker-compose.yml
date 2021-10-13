@@ -22,6 +22,15 @@ services:
       - 8081:80
     depends_on:
       - calc-queue
+  calc-api-dotnet:
+    container_name: calc-api-dotnet
+    build: ./calc-api-dotnet
+    environment:
+      - PORT=80
+      - SQS_ENDPOINT=http://calc-queue:9324
+      - QUEUE_ENDPOINT=http://calc-queue:9324/queue/default
+    ports:
+      - 8082:80
   calc-queue:
     container_name: calc-queue
     image: roribio16/alpine-sqs
