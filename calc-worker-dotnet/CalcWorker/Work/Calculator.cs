@@ -1,11 +1,12 @@
 using System;
+using System.Numerics;
 using Microsoft.Extensions.Logging;
 
 namespace CalcWorker.Work
 {
     public interface ICalculator
     {
-        long Factorial(int n);
+        BigInteger Factorial(int n);
     }
 
     public class Calculator : ICalculator
@@ -16,7 +17,7 @@ namespace CalcWorker.Work
             this.logger = logger;
         }
 
-        public long Factorial(int n)
+        public BigInteger Factorial(int n)
         {
             logger.LogInformation($"Calculation started: {n}!");
             if (n < 0)
@@ -24,7 +25,7 @@ namespace CalcWorker.Work
                 throw new ArgumentOutOfRangeException("Cannot take factorial of negative numbers.", nameof(n));
             }
 
-            long result = 1;
+            var result = new BigInteger(1);
 
             for (var i = 2; i <= n; i++)
             {
