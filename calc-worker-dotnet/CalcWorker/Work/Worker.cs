@@ -56,6 +56,7 @@ namespace CalcWorker.Work
             if (message == null)
             {
                 logger.LogInformation("No messages");
+                IsWorking = false;
                 return WorkStatus.NoWorkToDo;
             }
 
@@ -70,7 +71,7 @@ namespace CalcWorker.Work
             logger.LogDebug(JsonConvert.SerializeObject(job));
             await apiClient.PostResultAsync(job, cancellationToken);
 
-            job.Output = calculator.Factorial(job.Input.Value, cancellationToken);
+            job.Output = calculator.Factorial(job.Input.Value, cancellationToken).ToString();
             job.FinishedAt = dateTimeProvider.Now;
             logger.LogInformation("Update job - calculation finished");
             logger.LogDebug(JsonConvert.SerializeObject(job));

@@ -105,7 +105,7 @@ namespace CalcWorker.Test.Work
               .Setup(x => x.PostResultAsync(
                 It.Is<JobDTO>(job =>
                   job.Id == id &&
-                  job.Output == output &&
+                  job.Output == output.ToString() &&
                   job.CalcStartedAt == calculateTime &&
                   job.FinishedAt == finishTime
                 ),

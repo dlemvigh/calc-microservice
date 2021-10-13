@@ -16,7 +16,7 @@ namespace CalcWorker.Config
         {
             return new EnvConfig
             {
-                SqsEndpoint = Get(EnvVars.SQS_ENDPOINT, "http://locahost:9324"),
+                SqsEndpoint = Get(EnvVars.SQS_ENDPOINT, "http://localhost:9324"),
                 QueueEndpoint = Get(EnvVars.QUEUE_ENDPOINT, "http://localhost:9324/queue/default"),
                 ApiEndpoint = Get(EnvVars.API_ENDPOINT, "http://localhost:8081"),
                 PollingInterval = Get(EnvVars.POLLING_INTERVAL, 1000)

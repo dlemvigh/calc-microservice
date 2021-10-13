@@ -29,7 +29,9 @@ namespace CalcWorker.Queue
 
         public async Task<MessageDTO> ReceiveMessageAsync(CancellationToken cancellationToken = default)
         {
-            logger.LogDebug("Receive messages");
+            logger.LogInformation("Receive messages");
+            logger.LogDebug(config.SqsEndpoint);
+            logger.LogDebug(config.QueueEndpoint);
             var response = await sqsClient.ReceiveMessageAsync(new ReceiveMessageRequest
             {
                 QueueUrl = config.QueueEndpoint,

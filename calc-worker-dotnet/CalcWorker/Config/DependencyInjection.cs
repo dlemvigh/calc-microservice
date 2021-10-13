@@ -30,6 +30,9 @@ namespace CalcWorker.Config
             services.AddSingleton<ICalculator, Calculator>();
             services.AddSingleton<IQueueClientFactory, QueueClientFactory>();
             services.AddSingleton<IQueueClient>(s => s.GetService<IQueueClientFactory>().Create());
+            services.AddSingleton<IWorker, Worker>();
+            services.AddSingleton<IWorkerLoop, WorkerLoop>();
+            services.AddSingleton<IConsoleWorkerLoop, ConsoleWorkerLoop>();
             services.AddHttpClient();
 
             var serviceProvider = services.BuildServiceProvider();

@@ -33,7 +33,7 @@ namespace CalcWorker.Test.Api
                 .SetupRequest(HttpMethod.Put, $"{endpoint}/factorial/{id}", async request =>
                 {
                     var json = await request.Content.ReadAsStringAsync();
-                    return json == "{\"Id\":42}";
+                    return json == "{\"id\":42}";
                 })
                 .ReturnsResponse("{ \"id\": 42 }");
 
@@ -70,7 +70,7 @@ namespace CalcWorker.Test.Api
                 .SetupRequest(HttpMethod.Put, $"{endpoint}/factorial/{id}", async request =>
                 {
                     var json = await request.Content.ReadAsStringAsync();
-                    return json == "{\"Id\":42}";
+                    return json == "{\"id\":42}";
                 })
                 .ReturnsResponse("{ \"id\": 42 }")
                 .Verifiable();
