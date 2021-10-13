@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Threading.Tasks;
 using Amazon.SQS;
 using Amazon.SQS.Model;
@@ -10,8 +11,8 @@ namespace CalcWorker.Queue
 {
     public interface IQueueClient
     {
-        Task<MessageDTO> ReceiveMessageAsync();
-        Task DeleteMessageAsync(MessageDTO messge);
+        Task<MessageDTO> ReceiveMessageAsync(CancellationToken cancellationToken = default);
+        Task DeleteMessageAsync(MessageDTO messge, CancellationToken cancellationToken = default);
     }
 
     public class QueueClient : IQueueClient
@@ -26,7 +27,7 @@ namespace CalcWorker.Queue
             this.config = config;
         }
 
-        public async Task<MessageDTO> ReceiveMessageAsync()
+        public async Task<MessageDTO> ReceiveMessageAsync(CancellationToken cancellationToken = default)
         {
             logger.LogDebug("Receive messages");
             var response = await sqsClient.ReceiveMessageAsync(new ReceiveMessageRequest
@@ -34,7 +35,7 @@ namespace CalcWorker.Queue
                 QueueUrl = config.QueueEndpoint,
                 MaxNumberOfMessages = 1,
 
-            });
+            }, cancellationToken);
             logger.LogInformation($"Received {response.Messages.Count} message(s)");
             if (response.Messages.Count == 1)
             {
@@ -49,10 +50,10 @@ namespace CalcWorker.Queue
             return null;
         }
 
-        public async Task DeleteMessageAsync(MessageDTO message)
+        public async Task DeleteMessageAsync(MessageDTO message, CancellationToken cancellationToken = default)
         {
             logger.LogDebug("Delete message");
-            await sqsClient.DeleteMessageAsync(config.QueueEndpoint, message.ReceiptHandle);
+            await sqsClient.DeleteMessageAsync(config.QueueEndpoint, message.ReceiptHandle, cancellationToken);
             logger.LogDebug("Message deleted");
         }
 

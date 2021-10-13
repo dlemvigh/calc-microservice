@@ -1,12 +1,13 @@
 using System;
 using System.Numerics;
+using System.Threading;
 using Microsoft.Extensions.Logging;
 
 namespace CalcWorker.Work
 {
     public interface ICalculator
     {
-        BigInteger Factorial(int n);
+        BigInteger Factorial(int n, CancellationToken cancellationToken = default);
     }
 
     public class Calculator : ICalculator
@@ -17,7 +18,7 @@ namespace CalcWorker.Work
             this.logger = logger;
         }
 
-        public BigInteger Factorial(int n)
+        public BigInteger Factorial(int n, CancellationToken cancellationToken = default)
         {
             logger.LogInformation($"Calculation started: {n}!");
             if (n < 0)
@@ -29,6 +30,10 @@ namespace CalcWorker.Work
 
             for (var i = 2; i <= n; i++)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
                 result *= i;
             }
 
