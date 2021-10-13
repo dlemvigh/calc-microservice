@@ -1,11 +1,7 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CalcWorker.Api;
 using CalcWorker.Config;
-using CalcWorker.Queue;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace CalcWorker.Work
 {
@@ -33,7 +29,7 @@ namespace CalcWorker.Work
             while (!cancellationToken.IsCancellationRequested)
             {
                 var didWork = await worker.Work(cancellationToken);
-                if (didWork == WorkStatus.NoWorkToDo)
+                if (didWork == WorkStatus.NoWorkToDo || didWork == WorkStatus.WorkInProgress)
                 {
                     logger.LogInformation($"No work to do, sleeping for {interval}ms");
                     await Task.Delay(interval);

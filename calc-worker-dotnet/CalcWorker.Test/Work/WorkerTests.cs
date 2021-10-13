@@ -12,7 +12,7 @@ namespace CalcWorker.Test.Work
     public class WorkerTests
     {
         [Test]
-        public async Task DoWork_WithNoMessages_DoesNothing()
+        public async Task Work_WithNoMessages_DoesNothing()
         {
             // arrange
             var logger = new TestLogger<Worker>();
@@ -47,7 +47,7 @@ namespace CalcWorker.Test.Work
         }
 
         [Test]
-        public async Task DoWork_WithMessages_DoesWork()
+        public async Task Work_WithMessages_DoesWork()
         {
             // arrange
             var id = 42;
@@ -131,7 +131,7 @@ namespace CalcWorker.Test.Work
         }
 
         [Test]
-        public async Task DoWork_WorkInprogress_DoesNothing()
+        public async Task Work_WorkInprogress_DoesNothing()
         {
             // arrange
             var tcs = new TaskCompletionSource<MessageDTO>();
