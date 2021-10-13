@@ -1,11 +1,11 @@
 using System;
-using NUnit.Framework;
-using CalcWorker.Work;
+using System.Threading;
 using System.Threading.Tasks;
 using Moq;
-using CalcWorker.Queue;
+using NUnit.Framework;
 using CalcWorker.Api;
-using System.Threading;
+using CalcWorker.Queue;
+using CalcWorker.Work;
 
 namespace CalcWorker.Test.Work
 {

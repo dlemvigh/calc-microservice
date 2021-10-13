@@ -1,11 +1,11 @@
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Moq;
 using Moq.Contrib.HttpClient;
 using NUnit.Framework;
 using CalcWorker.Api;
 using CalcWorker.Config;
-using System.Threading;
 
 namespace CalcWorker.Test.Api
 {

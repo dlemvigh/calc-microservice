@@ -3,10 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Amazon.SQS;
 using Amazon.SQS.Model;
-using CalcWorker.Config;
-using CalcWorker.Queue;
 using Moq;
 using NUnit.Framework;
+using CalcWorker.Config;
+using CalcWorker.Queue;
 
 namespace CalcWorker.Test.Queue
 {
@@ -86,5 +86,26 @@ namespace CalcWorker.Test.Queue
             sqsClient.Verify();
         }
 
+        [Test]
+        public async Task DeleteMessageAsyncTest_Cancelled_DoesNothing()
+        {
+            // arrange
+            var receiptHandle = "some-receipt-handle";
+
+            var sqsClient = new Mock<IAmazonSQS>();
+            var logger = new TestLogger<QueueClient>();
+            var config = new EnvConfig
+            {
+                QueueEndpoint = "http://some-queue.io/my/queue",
+            };
+            var cancellationToken = new CancellationToken();
+
+            // act
+            var client = new QueueClient(sqsClient.Object, logger, config);
+            await client.DeleteMessageAsync(new MessageDTO { ReceiptHandle = receiptHandle }, cancellationToken);
+
+            // assert
+            sqsClient.Verify(x => x.DeleteMessageAsync(config.QueueEndpoint, receiptHandle, cancellationToken), Times.Once);
+        }
     }
 }
