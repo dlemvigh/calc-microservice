@@ -1,6 +1,7 @@
 using System;
 using System.Numerics;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace CalcWorker.Work
@@ -32,7 +33,7 @@ namespace CalcWorker.Work
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
-                    throw new OperationCanceledException();
+                    throw new TaskCanceledException();
                 }
                 result *= i;
             }

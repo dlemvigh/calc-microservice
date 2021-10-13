@@ -5,6 +5,7 @@ using Moq.Contrib.HttpClient;
 using NUnit.Framework;
 using CalcWorker.Api;
 using CalcWorker.Config;
+using System.Threading;
 
 namespace CalcWorker.Test.Api
 {
@@ -15,38 +16,70 @@ namespace CalcWorker.Test.Api
         {
             // arrange
             var endpoint = "http://some-endpoint.io:1234";
-            var job = new JobDTO
-            {
-                Id = 42,
-            };
+            var id = 42;
 
             var httpClientFactory = new Mock<IHttpClientFactory>();
             var handler = new Mock<HttpMessageHandler>();
+            var logger = new TestLogger<ApiClient>();
+            var config = new EnvConfig
+            {
+                ApiEndpoint = endpoint
+            };
+
             httpClientFactory
                 .Setup(x => x.CreateClient(It.IsAny<string>()))
                 .Returns(() => handler.CreateClient());
             handler
-                .SetupRequest(HttpMethod.Put, $"{endpoint}/factorial/{job.Id}", async request =>
+                .SetupRequest(HttpMethod.Put, $"{endpoint}/factorial/{id}", async request =>
                 {
                     var json = await request.Content.ReadAsStringAsync();
                     return json == "{\"Id\":42}";
                 })
                 .ReturnsResponse("{ \"id\": 42 }");
 
-            var logger = new TestLogger<ApiClient>();
 
+            // act
+            var apiClient = new ApiClient(httpClientFactory.Object, logger, config);
+            var res = await apiClient.PostResultAsync(new JobDTO { Id = id });
+
+            // assert
+            Assert.AreEqual(id, res.Id);
+            handler.VerifyAnyRequest(Times.Once());
+        }
+
+        [Test]
+        public void PostResultAsyncTest_CancelledRequest_DoesNothing()
+        {
+            // arrange
+            var id = 42;
+            var endpoint = "http://shoud-never-be-called.io";
+
+            var httpClientFactory = new Mock<IHttpClientFactory>();
+            var handler = new Mock<HttpMessageHandler>();
+            var logger = new TestLogger<ApiClient>();
             var config = new EnvConfig
             {
                 ApiEndpoint = endpoint
             };
+            var cancellationToken = new CancellationToken(true);
+
+            httpClientFactory
+                .Setup(x => x.CreateClient(It.IsAny<string>()))
+                .Returns(() => handler.CreateClient());
+            handler
+                .SetupRequest(HttpMethod.Put, $"{endpoint}/factorial/{id}", async request =>
+                {
+                    var json = await request.Content.ReadAsStringAsync();
+                    return json == "{\"Id\":42}";
+                })
+                .ReturnsResponse("{ \"id\": 42 }")
+                .Verifiable();
 
             // act
             var apiClient = new ApiClient(httpClientFactory.Object, logger, config);
-            var res = await apiClient.PostResultAsync(job);
 
             // assert
-            Assert.AreEqual(job.Id, res.Id);
-            handler.VerifyAnyRequest(Times.Once());
+            Assert.ThrowsAsync<TaskCanceledException>(() => apiClient.PostResultAsync(new JobDTO { Id = id }, cancellationToken));
         }
     }
 }
