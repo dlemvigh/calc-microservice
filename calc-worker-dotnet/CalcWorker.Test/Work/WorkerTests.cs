@@ -34,7 +34,7 @@ namespace CalcWorker.Test.Work
               calculator.Object,
               dateTimeProvider.Object
             );
-            var didWork = await worker.DoWork(new CancellationToken());
+            var didWork = await worker.Work(new CancellationToken());
 
             // assert
             Assert.AreEqual(WorkStatus.NoWorkToDo, didWork);
@@ -120,7 +120,7 @@ namespace CalcWorker.Test.Work
               calculator.Object,
               dateTimeProvider.Object
             );
-            var didWork = await worker.DoWork();
+            var didWork = await worker.Work();
 
             // assert
             Assert.AreEqual(WorkStatus.Finished, didWork);
@@ -146,8 +146,8 @@ namespace CalcWorker.Test.Work
 
             // act
             var worker = new Worker(logger, queueClient.Object, apiClient.Object, calculator.Object, dateTimeProvider.Object);
-            var task1 = worker.DoWork();
-            var task2 = worker.DoWork();
+            var task1 = worker.Work();
+            var task2 = worker.Work();
             var didWork2 = await task2;
             tcs.TrySetResult(null);
             var didWork1 = await task1;

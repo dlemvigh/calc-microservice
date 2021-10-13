@@ -7,15 +7,15 @@ namespace CalcWorker.Config
         string ApiEndpoint { get; }
         int PollingInterval { get; }
     }
-	public class EnvConfig : IEnvConfig
-	{
-		public string SqsEndpoint { get; set; }
+    public class EnvConfig : IEnvConfig
+    {
+        public string SqsEndpoint { get; set; }
 
-		public string QueueEndpoint { get; set; }
+        public string QueueEndpoint { get; set; }
 
-		public string ApiEndpoint { get; set; }
+        public string ApiEndpoint { get; set; }
 
-		public int PollingInterval { get; set; }
-	}
+        public int PollingInterval { get; set; }
+    }
 
 }

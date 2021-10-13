@@ -9,16 +9,9 @@ using Newtonsoft.Json;
 
 namespace CalcWorker.Work
 {
-    public enum WorkStatus
-    {
-        NoWorkToDo,
-        WorkInProgress,
-        Finished
-    };
-
     public interface IWorker
     {
-        Task<WorkStatus> DoWork(CancellationToken cancellationToken = default);
+        Task<WorkStatus> Work(CancellationToken cancellationToken = default);
     }
 
     public class Worker : IWorker
@@ -46,7 +39,7 @@ namespace CalcWorker.Work
 
         public bool IsWorking { get; private set; }
 
-        public async Task<WorkStatus> DoWork(CancellationToken cancellationToken = default)
+        public async Task<WorkStatus> Work(CancellationToken cancellationToken = default)
         {
             lock (this)
             {
@@ -88,6 +81,5 @@ namespace CalcWorker.Work
             IsWorking = false;
             return WorkStatus.Finished;
         }
-
     }
 }
