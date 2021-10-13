@@ -9,9 +9,16 @@ using Newtonsoft.Json;
 
 namespace CalcWorker.Work
 {
+    public enum WorkStatus
+    {
+        NoWorkToDo,
+        WorkInProgress,
+        Finished
+    };
+
     public interface IWorker
     {
-        Task DoWork(CancellationToken cancellationToken = default);
+        Task<WorkStatus> DoWork(CancellationToken cancellationToken = default);
     }
 
     public class Worker : IWorker
@@ -39,14 +46,14 @@ namespace CalcWorker.Work
 
         public bool IsWorking { get; private set; }
 
-        public async Task DoWork(CancellationToken cancellationToken = default)
+        public async Task<WorkStatus> DoWork(CancellationToken cancellationToken = default)
         {
             lock (this)
             {
                 if (IsWorking)
                 {
                     logger.LogInformation("Work is already in progress");
-                    return;
+                    return WorkStatus.WorkInProgress;
                 }
                 IsWorking = true;
             }
@@ -57,7 +64,7 @@ namespace CalcWorker.Work
             if (message == null)
             {
                 logger.LogInformation("No messages");
-                return;
+                return WorkStatus.NoWorkToDo;
             }
 
             var job = message.Job;
@@ -79,6 +86,7 @@ namespace CalcWorker.Work
 
             await queueClient.DeleteMessageAsync(message, cancellationToken);
             IsWorking = false;
+            return WorkStatus.Finished;
         }
 
     }

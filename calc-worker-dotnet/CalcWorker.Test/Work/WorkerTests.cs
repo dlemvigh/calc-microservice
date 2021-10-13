@@ -34,9 +34,10 @@ namespace CalcWorker.Test.Work
               calculator.Object,
               dateTimeProvider.Object
             );
-            await worker.DoWork(new CancellationToken());
+            var didWork = await worker.DoWork(new CancellationToken());
 
             // assert
+            Assert.AreEqual(WorkStatus.NoWorkToDo, didWork);
             apiClient.Verify(x => x.PostResultAsync(It.IsAny<JobDTO>(), It.IsAny<CancellationToken>()), Times.Never);
             calculator.Verify(x => x.Factorial(It.IsAny<int>(), It.IsAny<CancellationToken>()), Times.Never);
             queueClient.Verify(x => x.DeleteMessageAsync(
@@ -46,7 +47,7 @@ namespace CalcWorker.Test.Work
         }
 
         [Test]
-        public async Task DoWork_WithMessaes_DoesWork()
+        public async Task DoWork_WithMessages_DoesWork()
         {
             // arrange
             var id = 42;
@@ -119,13 +120,41 @@ namespace CalcWorker.Test.Work
               calculator.Object,
               dateTimeProvider.Object
             );
-            await worker.DoWork();
+            var didWork = await worker.DoWork();
 
             // assert
+            Assert.AreEqual(WorkStatus.Finished, didWork);
             queueClient.Verify(x => x.DeleteMessageAsync(
               It.Is<MessageDTO>(x => x.ReceiptHandle == receiptHandle),
               It.IsAny<CancellationToken>()
             ), Times.Once);
+        }
+
+        [Test]
+        public async Task DoWork_WorkInprogress_DoesNothing()
+        {
+            // arrange
+            var tcs = new TaskCompletionSource<MessageDTO>();
+
+            var logger = new TestLogger<Worker>();
+            var queueClient = new Mock<IQueueClient>();
+            var apiClient = new Mock<IApiClient>();
+            var calculator = new Mock<ICalculator>();
+            var dateTimeProvider = new Mock<IDateTimeProvider>();
+
+            queueClient.Setup(x => x.ReceiveMessageAsync(It.IsAny<CancellationToken>())).Returns(tcs.Task);
+
+            // act
+            var worker = new Worker(logger, queueClient.Object, apiClient.Object, calculator.Object, dateTimeProvider.Object);
+            var task1 = worker.DoWork();
+            var task2 = worker.DoWork();
+            var didWork2 = await task2;
+            tcs.TrySetResult(null);
+            var didWork1 = await task1;
+
+            // assert
+            Assert.AreEqual(WorkStatus.NoWorkToDo, didWork1);
+            Assert.AreEqual(WorkStatus.WorkInProgress, didWork2);
         }
     }
 }
