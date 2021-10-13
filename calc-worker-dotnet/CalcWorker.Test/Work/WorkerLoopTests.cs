@@ -46,7 +46,7 @@ namespace CalcWorker.Test.Work
             cts.Cancel();
 
             // assert
-            worker.Verify(x => x.Work(It.IsAny<CancellationToken>()), Times.Between(7, 10, Moq.Range.Inclusive));
+            worker.Verify(x => x.Work(It.IsAny<CancellationToken>()), Times.Between(7, 11, Moq.Range.Inclusive));
         }
 
         [Test]
@@ -67,7 +67,7 @@ namespace CalcWorker.Test.Work
             cts.Cancel();
 
             // assert
-            worker.Verify(x => x.Work(It.IsAny<CancellationToken>()), Times.Between(7, 10, Moq.Range.Inclusive));
+            worker.Verify(x => x.Work(It.IsAny<CancellationToken>()), Times.Between(7, 11, Moq.Range.Inclusive));
         }
 
         [Test]
