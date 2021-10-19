@@ -3,17 +3,17 @@ using Newtonsoft.Json;
 
 namespace CalcWorker.Queue
 {
-    public class MessageDTO
+    public record MessageDTO
     {
-        public string Body { get; set; }
-        public string ReceiptHandle { get; set; }
+        public string Body { get; init; }
+        public string ReceiptHandle { get; init; }
         public JobDTO Job
         {
             get
             {
                 return JsonConvert.DeserializeObject<JobDTO>(Body);
             }
-            set
+            init
             {
                 Body = JsonConvert.SerializeObject(value);
             }

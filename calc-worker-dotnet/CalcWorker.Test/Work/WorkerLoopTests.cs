@@ -25,7 +25,7 @@ namespace CalcWorker.Test.Work
         {
             logger = new TestLogger<WorkerLoop>();
             worker = new Mock<IWorker>();
-            config = new EnvConfig();
+            config = new EnvConfig() { PollingInterval = 10 };
         }
 
         [Test]
@@ -33,8 +33,6 @@ namespace CalcWorker.Test.Work
         {
             // arrange
             var cts = new CancellationTokenSource();
-
-            config.PollingInterval = 10;
 
             worker.Setup(x => x.Work(cts.Token)).ReturnsAsync(WorkStatus.NoWorkToDo).Verifiable();
 
@@ -55,8 +53,6 @@ namespace CalcWorker.Test.Work
             // arrange
             var cts = new CancellationTokenSource();
 
-            config.PollingInterval = 10;
-
             worker.Setup(x => x.Work(cts.Token)).ReturnsAsync(WorkStatus.WorkInProgress).Verifiable();
 
             // act
@@ -75,8 +71,6 @@ namespace CalcWorker.Test.Work
         {
             // arrange
             var cts = new CancellationTokenSource();
-
-            config.PollingInterval = 10;
 
             worker.Setup(x => x.Work(cts.Token)).ReturnsAsync(WorkStatus.Finished).Verifiable();
 
