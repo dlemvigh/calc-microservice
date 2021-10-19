@@ -3,14 +3,14 @@ using System.Numerics;
 
 namespace CalcWorker.Api
 {
-    public class JobDTO
+    public record JobDTO
     {
-        public string Version { get; set; }
-        public int Id { get; set; }
-        public int? Input { get; set; }
-        public string Output { get; set; }
-        public DateTime? CalcStartedAt { get; set; }
-        public DateTime? FinishedAt { get; set; }
-        public string Status { get; set; }
+        public string Version { get; init; }
+        public int Id { get; init; }
+        public int? Input { get; init; }
+        public string Output { get; init; }
+        public DateTime? CalcStartedAt { get; init; }
+        public DateTime? FinishedAt { get; init; }
+        public string Status { get; init; }
     }
 }

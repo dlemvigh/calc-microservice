@@ -61,7 +61,9 @@ namespace CalcWorker.Work
             }
 
             var job = message.Job;
-            job.CalcStartedAt = dateTimeProvider.Now;
+            job = job with {
+                CalcStartedAt = dateTimeProvider.Now
+            };
             if (!job.Input.HasValue)
             {
                 throw new ArgumentException("Cannot calculater factorial without input value", nameof(job.Input));
@@ -71,8 +73,11 @@ namespace CalcWorker.Work
             logger.LogDebug(JsonConvert.SerializeObject(job));
             await apiClient.PostResultAsync(job, cancellationToken);
 
-            job.Output = calculator.Factorial(job.Input.Value, cancellationToken).ToString();
-            job.FinishedAt = dateTimeProvider.Now;
+            job = job with {
+                Output = calculator.Factorial(job.Input.Value, cancellationToken).ToString(),
+                FinishedAt = dateTimeProvider.Now
+            };
+            
             logger.LogInformation("Update job - calculation finished");
             logger.LogDebug(JsonConvert.SerializeObject(job));
             await apiClient.PostResultAsync(job, cancellationToken);
