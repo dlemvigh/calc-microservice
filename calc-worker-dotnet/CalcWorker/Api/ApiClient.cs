@@ -39,15 +39,15 @@ namespace CalcWorker.Api
         }
         public async Task<JobDTO> PostResultAsync(JobDTO job, CancellationToken cancellationToken = default)
         {
-            using (var httpClient = httpClientFactory.CreateClient())
-            {
-                var endpoint = $"{config.ApiEndpoint}/factorial/{job.Id}";
-                var json = JsonConvert.SerializeObject(job, jsonSerializerSettings);
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
-                logger.LogInformation($"PUT {data}");
-                var res = await httpClient.PutAsync(endpoint, data, cancellationToken);
-                return JsonConvert.DeserializeObject<JobDTO>(await res.Content.ReadAsStringAsync());
-            }
+            using var httpClient = httpClientFactory.CreateClient();
+
+            var endpoint = $"{config.ApiEndpoint}/factorial/{job.Id}";
+            var json = JsonConvert.SerializeObject(job, jsonSerializerSettings);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            logger.LogInformation($"PUT {data}");
+            var res = await httpClient.PutAsync(endpoint, data, cancellationToken);
+            
+            return JsonConvert.DeserializeObject<JobDTO>(await res.Content.ReadAsStringAsync());
         }
 
     }
