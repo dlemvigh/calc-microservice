@@ -54,7 +54,7 @@
     "@types/react": "17.0.34",
     "@types/react-dom": "17.0.11",
     "@types/styled-components": "5.1.15",
-    "date-fns": "2.25.0",
+    "date-fns": "2.26.0",
     "faker": "5.5.3",
     "jest-image-snapshot": "4.5.1",
     "jest-transform-css": "2.1.0",
