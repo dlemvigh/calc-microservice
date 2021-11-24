@@ -14,6 +14,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cypress": "^9.0.0"
+    "cypress": "^9.1.0"
+  },
+  "volta": {
+    "node": "16.13.0",
+    "npm": "8.1.4"
   }
 }
