@@ -5,6 +5,7 @@ services:
     container_name: calc-web
     build:
       context: calc-web
+    image: dlemvigh/calc-web
     depends_on:
       - calc-api
     ports:
@@ -14,6 +15,7 @@ services:
     container_name: calc-api
     build:
       context: calc-api
+    image: dlemvigh/calc-api
     environment:
       - PORT=80
       - SQS_ENDPOINT=http://calc-queue:9324
@@ -32,6 +34,7 @@ services:
       - ./calc-jobs-queue/elasticmq.conf:/opt/config/elasticmq.conf
   calc-worker:
     build: ./calc-worker
+    image: dlemvigh/calc-worker
     environment:
       - SQS_ENDPOINT=http://calc-queue:9324
       - QUEUE_ENDPOINT=http://calc-queue:9324/queue/default
@@ -46,6 +49,7 @@ services:
       replicas: 1
   calc-worker-dotnet:
     build: ./calc-worker-dotnet
+    image: dlemvigh/calc-worker-dotnet
     environment:
       - SQS_ENDPOINT=http://calc-queue:9324
       - QUEUE_ENDPOINT=http://calc-queue:9324/queue/default
