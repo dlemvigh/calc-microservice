@@ -1,4 +1,4 @@
-# Calculation microserver
+# Calculation microservice
 
 Yet another demo project about microservices. The idea is put difficult calculations into a jobs queue, and have a scalable number of workers.
 
@@ -55,6 +55,6 @@ Each project can generate a test coverage report, by running `npm run test:cover
 
 ### Integration test
 
-There is a cypress integration test, that can be run with `docker-compose run cypress`. 
+There is a cypress integration test, that can be run with `docker-compose run cypress`.
 
 It is part of the services listed in the docker-compose file, but is ignore by `up`, unless explicitly mentioned by name or profile.
