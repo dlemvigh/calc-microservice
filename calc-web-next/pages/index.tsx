@@ -11,6 +11,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <h1>Factorials'r'us</h1>
     </div>
   )
 }
