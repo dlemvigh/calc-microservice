@@ -5,7 +5,7 @@ import { ifWindow } from "../lib/ifWindow";
 import { useQuerySSR } from "./useQuerySSR";
 
 export const BASE_URL =
-  process.env.REACT_APP_BASE_URL ||
+  process.env.API_ENDPOINT ||
   getFallbackHost(ifWindow(() => window.location.host));
 export const API_ENDPOINT = `http://${BASE_URL}`;
 export const WS_ENDPOINT = `ws://${BASE_URL}/websockets`;

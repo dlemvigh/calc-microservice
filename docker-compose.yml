@@ -24,6 +24,17 @@ services:
       - 8081:80
     depends_on:
       - calc-queue
+  calc-web-next:
+    container_name: calc-web-next
+    build:
+      context: calc-web-next
+    image: dlemvigh/calc-web-next
+    depends_on:
+      - calc-api
+    ports:
+      - 3000:3000
+    environment:
+      - API_ENDPOINT=calc-api:80
   calc-queue:
     container_name: calc-queue
     image: roribio16/alpine-sqs
