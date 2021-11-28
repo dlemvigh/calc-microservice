@@ -1,18 +1,32 @@
+import { CalculationForm } from '../components/Form/CalculationForm';
+import { CalculationList } from '../components/List/CalculationList';
 import Head from 'next/head'
-import Image from 'next/image'
+import Layout from "../components/Layout";
 import type { NextPage } from 'next'
-import styles from '../styles/Home.module.css'
+import styled from "styled-components"
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+  > * + * {
+    margin-top: 64px;
+  }
+`;
 
 const Home: NextPage = () => {
   return (
-    <div className={styles.container}>
+    <Layout>
       <Head>
         <title>Calculation microservice</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
+      {/* <GlobalStyles /> */}
       <h1>Factorials'r'us</h1>
-    </div>
+      <Column>
+        <CalculationForm />
+        <CalculationList />
+      </Column>
+    </Layout>
   )
 }
 
