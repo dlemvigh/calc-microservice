@@ -1,11 +1,5 @@
-import {
-  UseMutationResult,
-  UseQueryResult,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "react-query";
 import { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { ifWindow } from "../lib/ifWindow";
 import { useQuerySSR } from "./useQuerySSR";
@@ -66,7 +60,7 @@ export async function postFactorial({
   return await res.json();
 }
 
-export function useFactorials(initialData: Job[]) {
+export function useFactorials(initialData: Job[] = []) {
   // return useQuery(FACTORIALS_CACHE_KEY, getFactorials, {
   //   refetchInterval: REFETCH_INTERVAL,
   // });
