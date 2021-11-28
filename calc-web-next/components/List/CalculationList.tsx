@@ -2,8 +2,12 @@ import { Job, useFactorialSubscription, useFactorials } from "../../hooks/factor
 import React, { useMemo } from "react";
 import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 
-export function CalculationList() {
-    const { data } = useFactorials();
+interface CalculationListProps {
+    factorials: Job[];
+}
+
+export function CalculationList({ factorials }: CalculationListProps) {
+    const { data } = useFactorials(factorials);
     useFactorialSubscription();
     return (
         <>

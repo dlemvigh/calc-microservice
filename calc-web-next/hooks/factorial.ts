@@ -66,13 +66,13 @@ export async function postFactorial({
   return await res.json();
 }
 
-export function useFactorials() {
-  return useQuery(FACTORIALS_CACHE_KEY, getFactorials, {
-    refetchInterval: REFETCH_INTERVAL,
-  });
-  // return useQuerySSR(FACTORIALS_CACHE_KEY, getFactorials, initialData, {
+export function useFactorials(initialData: Job[]) {
+  // return useQuery(FACTORIALS_CACHE_KEY, getFactorials, {
   //   refetchInterval: REFETCH_INTERVAL,
   // });
+  return useQuerySSR(FACTORIALS_CACHE_KEY, getFactorials, initialData, {
+    refetchInterval: REFETCH_INTERVAL,
+  });
 }
 
 export function useCreateFactorial() {

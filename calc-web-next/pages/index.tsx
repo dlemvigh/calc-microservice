@@ -1,8 +1,10 @@
+import { GetStaticProps, NextPage } from 'next'
+import { Job, getFactorials } from '../hooks/factorial';
+
 import { CalculationForm } from '../components/Form/CalculationForm';
 import { CalculationList } from '../components/List/CalculationList';
 import Head from 'next/head'
 import Layout from "../components/Layout";
-import type { NextPage } from 'next'
 import styled from "styled-components"
 
 const Column = styled.div`
@@ -13,7 +15,11 @@ const Column = styled.div`
   }
 `;
 
-const Home: NextPage = () => {
+interface HomeProps {
+  factorials: Job[]
+}
+
+const Home: NextPage<HomeProps> = ({ factorials }) => {
   return (
     <Layout>
       <Head>
@@ -24,10 +30,19 @@ const Home: NextPage = () => {
       <h1>Factorials'r'us</h1>
       <Column>
         <CalculationForm />
-        <CalculationList />
+        <CalculationList factorials={factorials} />
       </Column>
     </Layout>
   )
+}
+
+export async function getStaticProps() {
+  const factorials = await getFactorials();
+  return {
+    props: {
+      factorials
+    }
+  }
 }
 
 export default Home
