@@ -1,10 +1,10 @@
-import { render, waitFor, screen } from "@testing-library/react";
-import user from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "react-query";
-import nock from "nock";
+import { render, screen, waitFor } from "@testing-library/react";
 
+import { API_ENDPOINT } from "../../hooks/factorial";
 import { CalculationForm } from "./CalculationForm";
-import { API_ENDPOINT } from "../Query/factorial";
+import nock from "nock";
+import user from "@testing-library/user-event";
 
 describe("CalculationForm functional tests", () => {
     const client = new QueryClient();
