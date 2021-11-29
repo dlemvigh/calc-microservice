@@ -1,4 +1,4 @@
-import { Job, getFactorials } from '../hooks/factorial';
+import { Job, getFactorialsSSR } from '../hooks/factorial';
 
 import { CalculationForm } from '../components/Form/CalculationForm';
 import { CalculationList } from '../components/List/CalculationList';
@@ -37,7 +37,7 @@ const Home: NextPage<HomeProps> = ({ factorials }) => {
 }
 
 export async function getServerSideProps() {
-  const factorials = await getFactorials();
+  const factorials = await getFactorialsSSR();
   return {
     props: {
       factorials

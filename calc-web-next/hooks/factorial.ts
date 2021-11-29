@@ -1,27 +1,18 @@
 import { useEffect, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 import { ifWindow } from "../lib/ifWindow";
 import { useQuerySSR } from "./useQuerySSR";
 
-export const BASE_URL =
-  process.env.API_ENDPOINT ||
-  getFallbackHost(ifWindow(() => window.location.host));
-export const API_ENDPOINT = `http://${BASE_URL}`;
-export const WS_ENDPOINT = `ws://${BASE_URL}/websockets`;
+export const BASE_URL = process.env.API_ENDPOINT || "localhost:3000";
+export const BASE_URL_SSR = process.env.API_ENDPOINT_SSR || "localhost:8081";
+
+export const API_ENDPOINT = `http://${BASE_URL}/api`;
+export const API_ENDPOINT_SSR = `http://${BASE_URL_SSR}`;
+export const WS_ENDPOINT = `ws://${BASE_URL_SSR}/websockets`;
 
 export const REFETCH_INTERVAL = 60 * 1000;
 export const FACTORIALS_CACHE_KEY = "factorials";
-
-function getFallbackHost(host?: string) {
-  switch (host) {
-    case "calc-web":
-      return "calc-api";
-    case "localhost":
-    default:
-      return "localhost:8081";
-  }
-}
 
 export interface Job {
   id: number;
@@ -33,13 +24,23 @@ export interface Job {
   finishedAt?: string;
 }
 
+export async function getFactorialsSSR() {
+  const res = await fetch(`${API_ENDPOINT_SSR}/factorial`, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    mode: "cors",
+  });
+  return await res.json();
+}
+
 export async function getFactorials() {
   const res = await fetch(`${API_ENDPOINT}/factorial`, {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    mode: "cors",
   });
   return await res.json();
 }

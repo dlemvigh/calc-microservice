@@ -34,7 +34,8 @@ services:
     ports:
       - 3000:3000
     environment:
-      - API_ENDPOINT=calc-api:80
+      - API_ENDPOINT=localhost:3000/api
+      - API_ENDPOINT_SSR=calc-api:80
   calc-queue:
     container_name: calc-queue
     image: roribio16/alpine-sqs
