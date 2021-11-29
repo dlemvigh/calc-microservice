@@ -3,10 +3,10 @@ import * as Yup from "yup";
 import { Formik, FormikHelpers } from "formik";
 import React, { useCallback } from "react";
 
-import { Button } from "@material-ui/core";
+import Button from "@mui/material/Button"
 import { CalculationInput } from "./CalculationInput";
 import styled from "styled-components";
-import { useCreateFactorial } from "../Query/factorial";
+import { useCreateFactorial } from "../../hooks/factorial";
 
 const validationSchema = Yup.object().shape({
     input: Yup.number()

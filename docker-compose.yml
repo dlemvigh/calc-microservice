@@ -24,6 +24,23 @@ services:
       - 8081:80
     depends_on:
       - calc-queue
+    networks:
+      - frontend
+      - backend
+  calc-web-next:
+    container_name: calc-web-next
+    build:
+      context: calc-web-next
+    image: dlemvigh/calc-web-next
+    depends_on:
+      - calc-api
+    ports:
+      - 3000:3000
+    environment:
+      - API_ENDPOINT=localhost:3000/api
+      - API_ENDPOINT_SSR=calc-api:80
+    networks:
+      - frontend
   calc-queue:
     container_name: calc-queue
     image: roribio16/alpine-sqs
@@ -32,6 +49,8 @@ services:
       - 9325:9325
     volumes:
       - ./calc-jobs-queue/elasticmq.conf:/opt/config/elasticmq.conf
+    networks:
+      - backend
   calc-worker:
     build: ./calc-worker
     image: dlemvigh/calc-worker
@@ -41,6 +60,8 @@ services:
       - API_ENDPOINT=http://calc-api:80
       - POLLING_INTERVAL=1000
       - DEBUG=false
+    networks:
+      - backend
     depends_on:
       - calc-queue
       - calc-api
@@ -56,6 +77,8 @@ services:
       - API_ENDPOINT=http://calc-api:80
       - POLLING_INTERVAL=1000
       - DEBUG=false
+    networks:
+      - backend
     depends_on:
       - calc-queue
       - calc-api
@@ -71,6 +94,11 @@ services:
       - calc-worker-dotnet
     environment:
       - CYPRESS_baseUrl=http://calc-web:80
+    networks:
+      - frontend
     working_dir: /e2e
     volumes:
       - "./integration-test:/e2e"
+networks:
+  frontend:
+  backend:
