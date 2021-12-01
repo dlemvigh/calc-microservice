@@ -30,7 +30,7 @@
     "ws": "^8.2.2"
   },
   "devDependencies": {
-    "@istanbuljs/nyc-config-typescript": "1.0.1",
+    "@istanbuljs/nyc-config-typescript": "1.0.2",
     "@tsconfig/node14": "1.0.1",
     "@types/chai": "4.2.22",
     "@types/cors": "2.8.12",
