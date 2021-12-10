@@ -1,17 +1,19 @@
-import { FC } from "react";
-import { renderHook, act } from "@testing-library/react-hooks";
-import faker from "faker";
-import WS from "jest-websocket-mock";
-import nock from "nock";
-import { QueryClient, QueryClientProvider } from "react-query";
-
 import {
-  useFactorials,
+  API_ENDPOINT,
+  API_ENDPOINT_SSR,
+  Job,
+  WS_ENDPOINT,
   useCreateFactorial,
   useFactorialSubscription,
-  API_ENDPOINT,
-  WS_ENDPOINT
+  useFactorials
 } from "./factorial";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { act, renderHook } from "@testing-library/react-hooks";
+
+import { FC } from "react";
+import WS from "jest-websocket-mock";
+import faker from "faker";
+import nock from "nock";
 
 describe("factorial", () => {
   it("useFactorials", async () => {
@@ -20,25 +22,18 @@ describe("factorial", () => {
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     );
 
-    const data = [{ id: faker.datatype.number() }];
-    const scope = nock(API_ENDPOINT)
-      .defaultReplyHeaders({
-        'access-control-allow-origin': '*'
-      })
-      .get('/factorial')
-      .reply(200, data);
+    const data: Job[] = [{
+      id: faker.datatype.number(),
+      input: faker.datatype.number(),
+      createdAt: faker.datatype.datetime().toISOString()
+    }];
 
-    const { result, waitFor } = renderHook(() => useFactorials(), { wrapper });
-
-    expect(result.current.isLoading).toBe(true);
-    expect(result.current.data).toBe(undefined);
+    const { result, waitFor } = renderHook(() => useFactorials(data), { wrapper });
 
     await waitFor(() => result.current.isSuccess);
 
     expect(result.current.isLoading).toBe(false);
     expect(result.current.data).toEqual(data);
-
-    scope.done();
   });
 
   it("useCreateFactorials", async () => {
@@ -84,8 +79,6 @@ describe("factorial", () => {
       .defaultReplyHeaders({
         'access-control-allow-origin': '*'
       })
-      .get('/factorial')
-      .reply(200, [])
       .post('/factorial')
       .reply(200, {
         id,
@@ -117,15 +110,9 @@ describe("factorial", () => {
     );
 
     const server = new WS(WS_ENDPOINT);
-    const scope = nock(API_ENDPOINT)
-      .defaultReplyHeaders({
-        'access-control-allow-origin': '*'
-      })
-      .get('/factorial')
-      .reply(200, []);
 
     const { result, waitFor, waitForNextUpdate } = renderHook(() => {
-      const get = useFactorials();
+      const get = useFactorials([]);
       const sub = useFactorialSubscription()
       return { get, sub }
     }, { wrapper });
@@ -152,7 +139,6 @@ describe("factorial", () => {
 
     expect(result.current.get.data).toEqual([data, { id, input, output }]);
 
-    scope.done();
     server.close();
     WS.clean();
   });
