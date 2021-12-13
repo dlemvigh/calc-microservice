@@ -53,7 +53,7 @@
     "@types/node": "16.11.11",
     "@types/react": "17.0.37",
     "@types/react-dom": "17.0.11",
-    "@types/styled-components": "5.1.15",
+    "@types/styled-components": "5.1.18",
     "date-fns": "2.27.0",
     "faker": "5.5.3",
     "jest-image-snapshot": "4.5.1",
