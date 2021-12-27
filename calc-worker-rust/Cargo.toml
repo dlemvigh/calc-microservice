@@ -1,0 +1,19 @@
+[package]
+name = "calc-worker-rust"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-rt = "*"
+aws-config = "0.3.0"
+aws-sdk-sqs = "0.3.0"
+aws-smithy-http = "*"
+aws-types = "*"
+num-bigint = "0.4"
+num-traits = "0.2"
+http = "*"
+
+[dev-dependencies]
+test-case = "1.2.1"
