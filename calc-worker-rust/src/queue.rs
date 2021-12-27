@@ -11,7 +11,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 	println!("SQS queues: {:?}", queues.queue_urls().unwrap_or_default());
 	let res = receive_message(&sqs_client).await;
 	println!("res {:?}", res);
-	assert!(false);
+	assert!(true);
 	Ok(())
  }
 

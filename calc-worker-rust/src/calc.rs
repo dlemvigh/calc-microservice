@@ -1,5 +1,6 @@
 use num_bigint::{BigUint, ToBigUint};
 
+#[allow(dead_code)]
 pub fn factorial(n: usize) -> BigUint
 {
 	let mut acc: BigUint = n.to_biguint().unwrap();
