@@ -85,6 +85,23 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+  calc-worker-rust:
+    build: ./calc-worker-rust
+    image: dlemvigh/calc-worker-rust
+    environment:
+      - SQS_ENDPOINT=http://calc-queue:9324
+      - QUEUE_ENDPOINT=http://calc-queue:9324/queue/default
+      - API_ENDPOINT=http://calc-api:80
+      - POLLING_INTERVAL=1000
+      - DEBUG=false
+    networks:
+      - backend
+    depends_on:
+      - calc-queue
+      - calc-api
+    deploy:
+      mode: replicated
+      replicas: 1
   cypress:
     image: "cypress/included:9.2.0"
     profiles:
