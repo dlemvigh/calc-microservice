@@ -3,7 +3,7 @@ use serde_json::Result;
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct Job {
+pub struct Job {
 	version: String,
 
 	id: u32,
@@ -24,13 +24,13 @@ struct Job {
 }
 
 #[allow(dead_code)]
-fn parse_job(json: &str) -> Result<Job> {
+pub fn parse_job(json: &str) -> Result<Job> {
 	let job: Result<Job> = serde_json::from_str(json);
 	return job;
 }
 
 #[allow(dead_code)]
-fn to_string(job: &Job) -> Result<String> {
+pub fn to_string(job: &Job) -> Result<String> {
 	let json: Result<String> = serde_json::to_string(job);
 	return json;
 }

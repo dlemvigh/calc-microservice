@@ -1,53 +1,82 @@
 use aws_sdk_sqs::{Client};
+use aws_sdk_sqs::model::Message;
 use aws_smithy_http::endpoint::Endpoint;
 use http::Uri;
 use std::error::Error;
 
-#[actix_rt::test]
-async fn main() -> Result<(), Box<dyn Error>> {
-	let shared_config = aws_config::from_env().load().await;
-	let sqs_client = sqs_client(&shared_config);
-	let queues = sqs_client.list_queues().send().await?;
-	println!("SQS queues: {:?}", queues.queue_urls().unwrap_or_default());
-	let res = receive_message(&sqs_client).await;
-	println!("res {:?}", res);
-	assert!(true);
-	Ok(())
- }
+use crate::config;
 
- /// If LOCALSTACK environment variable is true, use LocalStack endpoints.
- /// You can use your own method for determining whether to use LocalStack endpoints.
- #[allow(dead_code)]
- fn use_localstack() -> bool {
-	std::env::var("LOCALSTACK").unwrap_or_default() == "true"
- }
+fn get_endpoint() -> Endpoint {
+	let endpoint: Uri = config::get_sqs_endpoint().parse().expect("Unable to parse endoint");
+	return Endpoint::immutable(endpoint)
+}
 
- fn localstack_endpoint() -> Endpoint {
-	Endpoint::immutable(Uri::from_static("http://localhost:9324/"))
- }
+fn get_queue_endpoint() -> String {
+	return config::get_queue_endpoint();
+}
 
- #[allow(dead_code)]
- fn sqs_client(conf: &aws_types::config::Config) -> aws_sdk_sqs::Client {
-	let mut sqs_config_builder = aws_sdk_sqs::config::Builder::from(conf);
-	sqs_config_builder = sqs_config_builder.endpoint_resolver(localstack_endpoint());
+pub async fn sqs_client() -> aws_sdk_sqs::Client {
+	let config = aws_config::from_env().load().await;
+	let mut sqs_config_builder = aws_sdk_sqs::config::Builder::from(&config);
+	sqs_config_builder = sqs_config_builder.endpoint_resolver(get_endpoint());
 	aws_sdk_sqs::Client::from_conf(sqs_config_builder.build())
- }
+}
 
-#[allow(dead_code)]
-async fn receive_message(client: &Client) -> Result<(), Box<dyn Error>> {
-	println!("foo");
+pub async fn receive_message(client: &Client) -> Option<Message> {
 	let rsp = client
 		.receive_message()
-		.queue_url("http://calc-queue:9324/queue/default")
+		.queue_url(get_queue_endpoint())
 		.set_max_number_of_messages(Some(1))
+		.send()
+		.await;
+
+	match rsp {
+		Ok(rsp) => {
+			match rsp.messages {
+				Some(mut messages) => {
+					if messages.len() == 1 {
+						let message = messages.pop();
+						return message;
+					}
+					return None
+				},
+				None => None
+			}
+		},
+		Err(_) => None,
+	}
+}
+
+pub async fn delete_message(client: &Client, receipt_handle: &str) -> Result<(), Box<dyn Error>> {
+	client
+		.delete_message()
+		.receipt_handle(receipt_handle)
+		.queue_url(get_queue_endpoint())
 		.send()
 		.await?;
 
-	println!("received");
-	for message in rsp.messages.unwrap_or_default() {
-		println!("Got the message: {:#?}", message);
+	return Ok(());
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+
+	#[actix_rt::test]
+	async fn test_receive_message() {
+		let client = sqs_client().await;
+
+		let message = receive_message(&client).await;
+		println!("message {:?}", message);
+
+		if message.is_some() {
+			let receipt_handle = message.unwrap().receipt_handle.unwrap();
+			let _ = delete_message(&client, &receipt_handle).await;
+			println!("message deleted");
+		}
+		assert!(false);
 	}
-	Ok(())
+
 }
 
 //  async fn send_receive(client: &Client) -> Result<(), Box<dyn Error>> {
