@@ -13,7 +13,9 @@ spec:
     - name: "8081"
       port: 8081
       targetPort: 80
+      nodePort: 30081
   selector:
     io.kompose.service: calc-api
+  type: NodePort
 status:
   loadBalancer: {}
