@@ -34,7 +34,7 @@
     "@types/jest-image-snapshot": "4.3.1",
     "@types/jsdom-screenshot": "3.2.1",
     "@types/node": "16.11.22",
-    "@types/react": "17.0.38",
+    "@types/react": "17.0.39",
     "@types/react-query": "1.2.9",
     "@types/styled-components": "5.1.22",
     "babel-jest": "27.5.0",
