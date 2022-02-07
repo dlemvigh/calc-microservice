@@ -13,7 +13,9 @@ spec:
     - name: "8080"
       port: 8080
       targetPort: 80
+      nodePort: 30080
   selector:
     io.kompose.service: calc-web
+  type: NodePort
 status:
   loadBalancer: {}
