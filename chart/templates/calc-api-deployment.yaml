@@ -30,9 +30,9 @@ spec:
             - name: PORT
               value: "80"
             - name: QUEUE_ENDPOINT
-              value: http://calc-queue:9324/queue/default
+              value: {{ .Values.endpoints.queue }}
             - name: SQS_ENDPOINT
-              value: http://calc-queue:9324
+              value: {{ .Values.endpoints.sqs }}
           image: dlemvigh/calc-api
           name: calc-api
           ports:
