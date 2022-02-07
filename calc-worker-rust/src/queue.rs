@@ -2,7 +2,6 @@ use aws_sdk_sqs::{Client};
 use aws_sdk_sqs::model::Message;
 use aws_smithy_http::endpoint::Endpoint;
 use http::Uri;
-use std::error::Error;
 
 use crate::config;
 
@@ -22,7 +21,15 @@ pub async fn sqs_client() -> aws_sdk_sqs::Client {
 	aws_sdk_sqs::Client::from_conf(sqs_config_builder.build())
 }
 
-pub async fn receive_message(client: &Client) -> Option<Message> {
+pub enum QueueError {
+	ReceiveFailed(ReceiveMessageError),
+	DeleteFailed(DeleteMessageError),
+	MessageWasEmpty
+}
+
+type Result<T> = Result<T, QueueError>;
+
+pub async fn receive_message(client: &Client) -> Result<Option<Message>> {
 	let rsp = client
 		.receive_message()
 		.queue_url(get_queue_endpoint())
@@ -30,39 +37,47 @@ pub async fn receive_message(client: &Client) -> Option<Message> {
 		.send()
 		.await;
 
-	match rsp {
-		Ok(rsp) => {
-			match rsp.messages {
-				Some(mut messages) => {
-					if messages.len() == 1 {
-						let message = messages.pop();
-						return message;
-					}
-					return None
-				},
-				None => None
-			}
-		},
-		Err(_) => None,
+	let rsp = rsp.map_err(QueueError::ReceiveFailed)?;
+	let msgs = rsp.messages.unwrap_or(QueueError::MessageWasEmpty)?;
+	if msgs.len() == 1 {
+		return Ok(msgs.pop());		
 	}
+	Ok(None)
+
+	// match rsp {
+	// 	Ok(rsp) => {
+	// 		match rsp.messages {
+	// 			Some(mut messages) => {
+	// 				if messages.len() == 1 {
+	// 					let message = messages.pop();
+	// 					return message;
+	// 				}
+	// 				return None
+	// 			},
+	// 			None => None
+	// 		}
+	// 	},
+	// 	Err(_) => None,
+	// }
 }
 
-pub async fn delete_message(client: &Client, receipt_handle: &str) -> Result<(), Box<dyn Error>> {
+pub async fn delete_message(client: &Client, receipt_handle: &str) -> Result<()> {
 	client
 		.delete_message()
 		.receipt_handle(receipt_handle)
 		.queue_url(get_queue_endpoint())
 		.send()
-		.await?;
+		.await
+		.map_err(QueueError::DeleteFailed)?;
 
-	return Ok(());
+	Ok(())
 }
 
 #[cfg(test)]
 mod tests {
 	use super::*;
 
-	#[actix_rt::test]
+	// #[actix_rt::test]
 	async fn test_receive_message() {
 		let client = sqs_client().await;
 

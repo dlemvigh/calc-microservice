@@ -30,7 +30,7 @@ pub fn get_queue_endpoint() -> String {
 	return get_env("QUEUE_ENDPOINT", "http://localhost:9324/queue/default");
 }
 
-pub fn get_api_endpoint_endpoint() -> String {
+pub fn get_api_endpoint() -> String {
 	return get_env("API_ENDPOINT", "http://localhost:8081");
 }
 
