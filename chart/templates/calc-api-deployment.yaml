@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c -f docker-compose.yml -o chart
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: calc-api
+  name: calc-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: calc-api
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -c -f docker-compose.yml -o chart
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/backend: "true"
+        io.kompose.network/frontend: "true"
+        io.kompose.service: calc-api
+    spec:
+      containers:
+        - env:
+            - name: PORT
+              value: "80"
+            - name: QUEUE_ENDPOINT
+              value: http://calc-queue:9324/queue/default
+            - name: SQS_ENDPOINT
+              value: http://calc-queue:9324
+          image: dlemvigh/calc-api
+          name: calc-api
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+status: {}
