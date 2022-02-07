@@ -1,0 +1,3 @@
+endpoints:
+  sqs: http://calc-queue.default.svc.cluster.local:9324
+  queue: http://calc-queue.default.svc.cluster.local:9324/queue/default
