@@ -58,3 +58,26 @@ Each project can generate a test coverage report, by running `npm run test:cover
 There is a cypress integration test, that can be run with `docker-compose run cypress`.
 
 It is part of the services listed in the docker-compose file, but is ignore by `up`, unless explicitly mentioned by name or profile.
+
+## Current state of progress
+
+All services work: web client, api, queue, workers. Some even have multiple implementations.
+
+### Web
+
+* Create-react-app, static build, served with nginx
+* NextJS
+
+### Worker
+
+* Node
+* C#
+* (incomplete rust, on a branch)
+
+None of the implementations are particularly optimized, and use a simple/naive implementation of looping to calculate factorials. There are no attempts at parallel processing, or memory optimizations.
+
+### Deployment
+
+There is a docker-compose base setup, that works for local development, and testing in CI.
+
+There is a few kubernetes yaml files for services/deployments, but not a full setup (there is a branch with an incomplete helm deploy).
