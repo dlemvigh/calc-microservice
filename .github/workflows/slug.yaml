@@ -9,6 +9,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: rlespinasse/github-slug-action@v4
+        with:
+          slug-maxlength: 24
       - name: Output
         run: |
           echo "Partial variables"
