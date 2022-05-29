@@ -11,6 +11,8 @@ services:
     ports:
       - 8080:80
     command: [nginx-debug, "-g", "daemon off;"]
+    networks:
+      - frontend
   calc-api:
     container_name: calc-api
     build:
