@@ -2,7 +2,7 @@ FROM  mcr.microsoft.com/playwright:v1.24.0-focal
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci
+RUN npm i
 COPY . . 
 
 ENTRYPOINT ["npm", "run", "test:ct"]
