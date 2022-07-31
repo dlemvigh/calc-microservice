@@ -14,3 +14,12 @@ jobs:
         run: docker-compose run cypress
       - name: Stop
         run: docker-compose down
+  visual:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build containers
+        run: docker-compose build calc-web-next-playwright
+      - name: Build containers
+        run: docker-compose run calc-web-next-playwright
