@@ -49,10 +49,10 @@ services:
     build: 
       context: calc-web-next
       dockerfile: Dockerfile.playwright
-    volumes:
-      - ./calc-web-next/__snapshots__:/app/__snapshots__
-      - ./calc-web-next/playwright-report:/app/playwright-report
-      - ./calc-web-next/test-results:/app/test-results
+    # volumes:
+    #   - ./calc-web-next/__snapshots__:/app/__snapshots__
+    #   - ./calc-web-next/playwright-report:/app/playwright-report
+    #   - ./calc-web-next/test-results:/app/test-results
     
   calc-queue:
     container_name: calc-queue
