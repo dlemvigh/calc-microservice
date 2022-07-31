@@ -43,6 +43,15 @@ services:
       - API_ENDPOINT_SSR=calc-api:80
     networks:
       - frontend
+  calc-web-next-playwright:
+    profiles:
+      - visual
+    build: 
+      context: calc-web-next
+      dockerfile: Dockerfile.playwright
+    volumes:
+      - ./calc-web-next/__snapshots__:/app/__snapshots__
+    
   calc-queue:
     container_name: calc-queue
     image: roribio16/alpine-sqs
