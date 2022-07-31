@@ -61,7 +61,7 @@ export async function postFactorial({
   return await res.json();
 }
 
-export function useFactorials(initialData: Job[] = []) {
+export function useFactorials(initialData?: Job[]) {
   // return useQuery(FACTORIALS_CACHE_KEY, getFactorials, {
   //   refetchInterval: REFETCH_INTERVAL,
   // });

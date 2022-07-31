@@ -21,7 +21,7 @@ export function useQuerySSR<
 ): UseQueryResult<TData, TError> {
   const extendedOptions = {
     initialData,
-    initialDataUpdatedAt: Number(new Date()),
+    initialDataUpdatedAt: initialData == null ? undefined : Number(new Date()),
     keepPreviousData: true,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
