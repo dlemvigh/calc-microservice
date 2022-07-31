@@ -45,7 +45,8 @@ services:
       - frontend
   calc-web-next-playwright:
     profiles:
-      - visual
+      - ct
+      - test
     build: 
       context: calc-web-next
       dockerfile: Dockerfile.playwright
@@ -101,7 +102,9 @@ services:
   cypress:
     image: "cypress/included:9.4.1"
     profiles:
-      - ci
+      - e2e      
+      - test
+
     depends_on:
       - calc-web
       - calc-worker-dotnet
