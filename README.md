@@ -8,6 +8,22 @@ The difficult calculation in this case is factorials of large numbers `n!`
 
 ![Architecture diagram](/calc-microservice-architecture.jpg)
 
+```mermaid
+sequenceDiagram
+  participant Web
+  participant Api
+  participant Db
+  participant Queue
+  participant Worker
+  Web ->> Api : Request calculation
+  Api ->> Db : Store state
+  Api ->> Queue : Queue calculation
+  Queue ->> Worker : Dequeue calculation
+  Worker ->> Api : Return result
+  Api ->> Db : Store result
+  Api -->> Web : Return result
+```
+
 ### Calc-web
 
 Website for creating calculation jobs, and view pending and finished calculations.
