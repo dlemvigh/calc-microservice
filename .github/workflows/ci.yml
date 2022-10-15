@@ -12,5 +12,8 @@ jobs:
         run: docker-compose build
       - name: Cypress
         run: docker-compose run cypress
+      - name: Cypress (fix-ownership)
+        run: sudo chown $(id -u):$(id -g) -R cypress
+        working-directory: integration-test
       - name: Stop
         run: docker-compose down
