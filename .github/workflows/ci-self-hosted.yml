@@ -14,5 +14,15 @@ jobs:
         run: docker-compose build
       - name: Cypress
         run: docker-compose run cypress
+      - name: Cypress (remove videos)
+        uses: JesseTG/rm@v1.0.3
+        if: ${{ always() }}
+        with:
+          path: integration-test/cypress/videos
+      - name: Cypress (remove screenshots)
+        uses: JesseTG/rm@v1.0.3
+        if: ${{ always() }}
+        with:
+          path: integration-test/cypress/screenshots
       - name: Stop
         run: docker-compose down
