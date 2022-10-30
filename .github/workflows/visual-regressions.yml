@@ -1,6 +1,9 @@
 name: Visual regressions
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:    
+  pull_request:
+    types: [opened, reopened, synchronize]
 
 jobs:
   visual:
