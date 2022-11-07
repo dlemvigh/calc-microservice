@@ -17,7 +17,7 @@
   "dependencies": {
     "@emotion/react": "11.7.1",
     "@emotion/styled": "11.6.0",
-    "@mui/material": "5.4.0",
+    "@mui/material": "5.10.13",
     "formik": "2.2.9",
     "next": "12.1.6",
     "next-http-proxy-middleware": "1.1.2",
