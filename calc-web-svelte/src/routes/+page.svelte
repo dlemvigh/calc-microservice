@@ -1,2 +1,7 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+  import CalcForm from "../components/CalcForm.svelte";
+  import CalcList from "../components/CalcList.svelte";
+</script>
+
+<CalcForm />
+<CalcList />
