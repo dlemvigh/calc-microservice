@@ -13,6 +13,16 @@ services:
     command: [nginx-debug, "-g", "daemon off;"]
     networks:
       - frontend
+  calc-web-svelte:
+    container_name: calc-web-svelte
+    build:
+      context: calc-web-svelte
+    image: dlemvigh/calc-web-svelte
+    depends_on:
+      - calc-api
+    ports:
+      - 8082:3000
+
   calc-api:
     container_name: calc-api
     build:
@@ -37,6 +47,7 @@ services:
     depends_on:
       - calc-api
     ports:
+      - 8081:3000
       - 3000:3000
     environment:
       - API_ENDPOINT=localhost:3000/api
