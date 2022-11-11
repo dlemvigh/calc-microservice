@@ -1,4 +1,4 @@
-FROM node:16.13 as build
+FROM node:16.16 as build
 WORKDIR /app
 
 COPY package* ./
@@ -7,7 +7,7 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-FROM node:16.13-alpine as runner
+FROM node:16.16-alpine as runner
 WORKDIR /app
 
 ENV NODE_ENV production
