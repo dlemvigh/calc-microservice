@@ -1,12 +1,12 @@
 {
   "name": "@dlemvigh/calc-interfaces",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Shared interfaces of the calc-microservice.",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/dlemvigh/calc-microservice.git"
   },
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
